@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ias_main">#D36165</color>
-    <color name="ias_background">#F9FAF1</color>
+    <color name="ias_main">#73933A</color>
+    <color name="ias_main_fade">#B5C693</color>
+    <color name="ias_background">#F9F9F1</color>
     <color name="ias_blue">#0F3B5F</color>
     <color name="white">#FFFFFF</color>
-    <style name="Ias" parent="@android:style/Theme.Light.NoTitleBar">
+    <style name="AshTag" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">@color/ias_background</item>
         <item name="android:colorBackground">@color/ias_background</item>
     </style>
