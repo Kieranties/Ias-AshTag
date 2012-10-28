@@ -1,4 +1,4 @@
-package org.iasess.android;
+package org.iasess.ashtag;
 
 import android.util.Log;
 
@@ -10,7 +10,7 @@ public final class Logger {
 	/**
 	 * The application wide tag name to use when appending messages to LogCat
 	 */
-	private static String _tagName = IasessApp.getContext().getResources().getString(R.string.app_name);
+	private static String _tagName = AshTagApp.getContext().getResources().getString(R.string.app_name);
 	
 	/**
 	 * Private constructor to promote Singleton use

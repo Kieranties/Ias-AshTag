@@ -1,4 +1,4 @@
-package org.iasess.android;
+package org.iasess.ashtag;
 
 import android.app.Application;
 import android.content.ContextWrapper;
@@ -18,7 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  * Extends the base Application with static accessors
  * and globally useful methods *
  */
-public class IasessApp extends Application {
+public class AshTagApp extends Application {
 
 	/**
 	 * Reference to application context, initialised in constructor

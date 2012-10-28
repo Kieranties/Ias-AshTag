@@ -1,4 +1,4 @@
-package org.iasess.android.api;
+package org.iasess.ashtag.api;
 
 import java.util.Map;
 

@@ -1,7 +1,7 @@
-package org.iasess.android.activities;
+package org.iasess.ashtag.activities;
 
-import org.iasess.android.IasessApp;
-import org.iasess.android.R;
+import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,7 +26,7 @@ public class InvadrActivityBase extends Activity {
 	protected void onDestroy() {
 	    super.onDestroy();
 	 
-	    IasessApp.unbindDrawables(findViewById(R.id.RootView));
+	    AshTagApp.unbindDrawables(findViewById(R.id.RootView));
 	    System.gc();
 	}
 }

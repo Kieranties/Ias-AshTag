@@ -1,12 +1,12 @@
-package org.iasess.android.activities;
+package org.iasess.ashtag.activities;
 
 import java.util.ArrayList;
 
-import org.iasess.android.IasessApp;
-import org.iasess.android.R;
-import org.iasess.android.TaxonParcel;
-import org.iasess.android.data.ImageStore;
-import org.iasess.android.data.TaxaStore;
+import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.R;
+import org.iasess.ashtag.TaxonParcel;
+import org.iasess.ashtag.data.ImageStore;
+import org.iasess.ashtag.data.TaxaStore;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -20,9 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.Gallery;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -150,7 +148,7 @@ public class TaxaDetails extends InvadrActivityBase {
 		protected void onPostExecute(ArrayList<String> results) {
 			images = results;			
 			if(results.isEmpty()){
-				IasessApp.makeToast("No images found...");
+				AshTagApp.makeToast("No images found...");
 			} else if (images.size() == 1) {
 				ImageView iv = getImageView();
 				ImageLoader.getInstance().displayImage(images.get(0), iv);

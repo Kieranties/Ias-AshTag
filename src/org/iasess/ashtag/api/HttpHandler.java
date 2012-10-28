@@ -1,4 +1,4 @@
-package org.iasess.android.api;
+package org.iasess.ashtag.api;
 
 import java.io.IOException;
 import java.util.ArrayList;

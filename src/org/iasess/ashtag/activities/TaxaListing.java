@@ -1,12 +1,12 @@
-package org.iasess.android.activities;
+package org.iasess.ashtag.activities;
 
-import org.iasess.android.IasessApp;
-import org.iasess.android.R;
-import org.iasess.android.SubmitParcel;
-import org.iasess.android.TaxonParcel;
-import org.iasess.android.api.ApiHandler;
-import org.iasess.android.data.ImageStore;
-import org.iasess.android.data.TaxaStore;
+import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.R;
+import org.iasess.ashtag.SubmitParcel;
+import org.iasess.ashtag.TaxonParcel;
+import org.iasess.ashtag.api.ApiHandler;
+import org.iasess.ashtag.data.ImageStore;
+import org.iasess.ashtag.data.TaxaStore;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -15,9 +15,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -58,35 +55,6 @@ public class TaxaListing extends InvadrActivityBase {
 	}
 
 	/**
-	 * Handler for the display of the menu
-	 * 
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.refresh_list, menu);
-		return true;
-	}
-
-	/**
-	 * Handler for the selection of a menu option
-	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-			case R.id.menu_refresh:
-				new PopulateList().execute("refresh");
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
-
-	/**
 	 * Clean up the resources of this Activity when destroyed
 	 * 
 	 * @see android.app.Activity#onDestroy()
@@ -111,7 +79,7 @@ public class TaxaListing extends InvadrActivityBase {
 		 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
 		 */
 		public void onItemClick(AdapterView<?> adapter, View view, int position, long rowId) {				
-			Intent intent = new Intent(IasessApp.getContext(), Summary.class);
+			Intent intent = new Intent(AshTagApp.getContext(), Summary.class);
 			
 			// set the selected image
 			Intent orig = getIntent();
@@ -139,7 +107,7 @@ public class TaxaListing extends InvadrActivityBase {
 		 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
 		 */
 		public void onItemClick(AdapterView<?> adapter, View view, int position, long rowId) {				
-			Intent intent = new Intent(IasessApp.getContext(), TaxaDetails.class);		
+			Intent intent = new Intent(AshTagApp.getContext(), TaxaDetails.class);		
 			TaxonParcel parcel = new TaxonParcel(rowId, null);
 			intent.putExtra(TaxonParcel.TAXON_PARCEL_EXTRA, parcel);
 			startActivity(intent);				

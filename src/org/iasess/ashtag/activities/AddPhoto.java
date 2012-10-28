@@ -1,10 +1,10 @@
-package org.iasess.android.activities;
+package org.iasess.ashtag.activities;
 
 import java.net.URI;
 
-import org.iasess.android.SubmitParcel;
-import org.iasess.android.ImageHandler;
-import org.iasess.android.R;
+import org.iasess.ashtag.ImageHandler;
+import org.iasess.ashtag.R;
+import org.iasess.ashtag.SubmitParcel;
 
 import android.app.Activity;
 import android.content.Intent;

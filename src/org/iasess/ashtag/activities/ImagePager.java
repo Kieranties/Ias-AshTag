@@ -1,8 +1,8 @@
-package org.iasess.android.activities;
+package org.iasess.ashtag.activities;
 
 import java.util.ArrayList;
 
-import org.iasess.android.R;
+import org.iasess.ashtag.R;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,9 +11,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;

@@ -1,9 +1,9 @@
-package org.iasess.android.activities;
+package org.iasess.ashtag.activities;
 
-import org.iasess.android.IasessApp;
-import org.iasess.android.R;
-import org.iasess.android.api.ApiHandler;
-import org.iasess.android.api.UserCheckResponse;
+import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.R;
+import org.iasess.ashtag.api.ApiHandler;
+import org.iasess.ashtag.api.UserCheckResponse;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -41,7 +41,7 @@ public class Settings extends InvadrActivityBase implements OnEditorActionListen
 		_editText = (EditText) findViewById(R.id.editUsername);
 
 		// set from application preferences
-		_editText.setText(IasessApp.getPreferenceString(IasessApp.PREFS_USERNAME));
+		_editText.setText(AshTagApp.getPreferenceString(AshTagApp.PREFS_USERNAME));
 
 		// attach listener for focus lost events
 		_editText.setOnEditorActionListener(this);
@@ -53,7 +53,7 @@ public class Settings extends InvadrActivityBase implements OnEditorActionListen
 	 * @param v The {@link View} which fired this event handler
 	 */
 	public void onDoneClick(View v) {
-		IasessApp.setPreferenceString(IasessApp.PREFS_USERNAME, _editText.getText().toString());
+		AshTagApp.setPreferenceString(AshTagApp.PREFS_USERNAME, _editText.getText().toString());
 		finish();
 	}
 
@@ -127,7 +127,7 @@ public class Settings extends InvadrActivityBase implements OnEditorActionListen
 	    	
 	    	if(result != null){
 	    		//inform the user of the response
-		    	IasessApp.makeToast(result.getAnswer());
+		    	AshTagApp.makeToast(result.getAnswer());
 		    	
 		    	//update ui if required
 				String username = result.getUsername();
@@ -136,7 +136,7 @@ public class Settings extends InvadrActivityBase implements OnEditorActionListen
 				}
 				_editText.clearFocus();		
 	    	} else {
-	    		IasessApp.makeToast("Could not contact website.  Please try again later.");
+	    		AshTagApp.makeToast("Could not contact website.  Please try again later.");
 	    	}	    		
 	    }
 	}

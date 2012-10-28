@@ -1,4 +1,4 @@
-package org.iasess.android;
+package org.iasess.ashtag;
 
 import android.os.Parcel;
 import android.os.Parcelable;

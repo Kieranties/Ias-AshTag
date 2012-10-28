@@ -1,14 +1,14 @@
-package org.iasess.android.api;
+package org.iasess.ashtag.api;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.iasess.android.IasessApp;
-import org.iasess.android.SubmitParcel;
-import org.iasess.android.Logger;
-import org.iasess.android.R;
+import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.Logger;
+import org.iasess.ashtag.R;
+import org.iasess.ashtag.SubmitParcel;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,27 +21,27 @@ public class ApiHandler {
 	/**
 	 * The base url for all API requests
 	 */
-	private static String API_BASE = IasessApp.getResourceString(R.string.ias_base);
+	private static String API_BASE = AshTagApp.getResourceString(R.string.ias_base);
 	
 	/**
 	 * The version base for all API requests 
 	 */
-	private static String API_VERSION = IasessApp.getResourceString(R.string.ias_api_version);
+	private static String API_VERSION = AshTagApp.getResourceString(R.string.ias_api_version);
 	
 	/**
 	 * The URL partial for Taxa Gallery requests
 	 */
-	private static String API_TAXA_GALLERY = IasessApp.getResourceString(R.string.ias_taxa_gallery);
+	private static String API_TAXA_GALLERY = AshTagApp.getResourceString(R.string.ias_taxa_gallery);
 	
 	/**
 	 * The URL partial for Username validation requests 
 	 */
-	private static String API_USER_CHECK = IasessApp.getResourceString(R.string.ias_user_check);
+	private static String API_USER_CHECK = AshTagApp.getResourceString(R.string.ias_user_check);
 	
 	/**
 	 * The URL partial for submission requests
 	 */
-	private static String API_SIGHTING = IasessApp.getResourceString(R.string.ias_sighting);
+	private static String API_SIGHTING = AshTagApp.getResourceString(R.string.ias_sighting);
 		
 	/**
 	 * Requests the collection of Taxa from the API

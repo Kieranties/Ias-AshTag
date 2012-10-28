@@ -1,9 +1,8 @@
-package org.iasess.android.data;
+package org.iasess.ashtag.data;
 
 import java.util.ArrayList;
 
-import org.iasess.android.api.ApiHandler;
-import org.iasess.android.api.TaxaItem;
+import org.iasess.ashtag.api.TaxaItem;
 
 import android.content.ContentValues;
 import android.content.Context;

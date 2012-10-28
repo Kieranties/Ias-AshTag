@@ -1,4 +1,4 @@
-package org.iasess.android;
+package org.iasess.ashtag;
 
 import java.io.File;
 import java.util.HashMap;
@@ -64,7 +64,7 @@ public class SubmitParcel extends TaxonParcel implements Parcelable {
 		HashMap<String, ContentBody> map = new HashMap<String, ContentBody>();
 		try {
 			map.put("email",
-					new StringBody(IasessApp.getUsernamePreferenceString()));
+					new StringBody(AshTagApp.getUsernamePreferenceString()));
 			map.put("location", new StringBody("POINT(" + _longitude + " "
 					+ _latitude + ")"));
 			map.put("taxon", new StringBody(Long.toString(_taxonId)));

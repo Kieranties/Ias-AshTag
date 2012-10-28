@@ -1,11 +1,11 @@
-package org.iasess.android.activities;
+package org.iasess.ashtag.activities;
 
-import org.iasess.android.IasessApp;
-import org.iasess.android.ImageHandler;
-import org.iasess.android.R;
-import org.iasess.android.SubmitParcel;
-import org.iasess.android.api.ApiHandler;
-import org.iasess.android.api.SubmissionResponse;
+import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.ImageHandler;
+import org.iasess.ashtag.R;
+import org.iasess.ashtag.SubmitParcel;
+import org.iasess.ashtag.api.ApiHandler;
+import org.iasess.ashtag.api.SubmissionResponse;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -130,7 +130,7 @@ public class Summary extends MapActivity{
 	protected void onDestroy() {
 	    super.onDestroy();
 	 
-	    IasessApp.unbindDrawables(findViewById(R.id.RootView));
+	    AshTagApp.unbindDrawables(findViewById(R.id.RootView));
 	    System.gc();
 	}
 	
@@ -156,7 +156,7 @@ public class Summary extends MapActivity{
 		//check gps is enabled
 		_locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 		if (!_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-			IasessApp.makeToast(this, "Please enable GPS");
+			AshTagApp.makeToast(this, "Please enable GPS");
 			Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 			startActivityForResult(gpsIntent, GPS_INTENT);
 		} else{
@@ -256,7 +256,7 @@ public class Summary extends MapActivity{
 	    protected void onPostExecute(SubmissionResponse result) {	    	
 	    	_dlg.dismiss();
 	    	if(result.getId() != Integer.MIN_VALUE){
-	    		IasessApp.makeToast("Submitted!");    		
+	    		AshTagApp.makeToast("Submitted!");    		
 	    		 
 	    		//display the success page to the user
 	            //add in device query string param
@@ -279,7 +279,7 @@ public class Summary extends MapActivity{
 	    	}  
 	    	else
 	    	{
-	    		IasessApp.makeToast("Sorry, please try again later :-(");
+	    		AshTagApp.makeToast("Sorry, please try again later :-(");
 	    	}
 	    }
 	}

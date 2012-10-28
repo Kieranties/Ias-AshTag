@@ -1,6 +1,6 @@
-package org.iasess.android.activities;
+package org.iasess.ashtag.activities;
 
-import org.iasess.android.R;
+import org.iasess.ashtag.R;
 
 import android.os.Bundle;
 import android.text.Html;

@@ -1,4 +1,4 @@
-package org.iasess.android;
+package org.iasess.ashtag;
 
 import java.io.IOException;
 
@@ -129,7 +129,7 @@ public final class ImageHandler {
 	 */
 	public static String getPath(Uri uri) {
 		String[] projection = { MediaStore.Images.Media.DATA };
-		ContentResolver resolver = IasessApp.getContext().getContentResolver();
+		ContentResolver resolver = AshTagApp.getContext().getContentResolver();
 		Cursor cursor = resolver.query(uri, projection, null, null, null);
 		int column_index = cursor
 				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

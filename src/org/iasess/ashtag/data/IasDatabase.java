@@ -1,4 +1,4 @@
-package org.iasess.android.data;
+package org.iasess.ashtag.data;
 
 import android.content.Context;
 import android.database.Cursor;
