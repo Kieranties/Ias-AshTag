@@ -50,7 +50,7 @@ public class TaxaDetails extends InvadrActivityBase {
 		
 		TextView tvSource = (TextView)findViewById(R.id.textSource);
 		String sourceStub = getResources().getString(R.string.source);
-		tvSource.setText(sourceStub + source);
+		tvSource.setText(sourceStub + " " + source);
 		
 		TextView tvDetail = (TextView)findViewById(R.id.textDetail);
 		tvDetail.setText(detail);
