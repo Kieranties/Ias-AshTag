@@ -75,7 +75,7 @@ public class AddPhoto extends InvadrActivityBase {
      * @param v The {@link View} which fired the event handler
      */
     public void onNextClick(View v){
-    	Intent intent = new Intent(this, TaxaListing.class);
+    	Intent intent = new Intent(this, Summary.class);
     	intent.putExtra(SubmitParcel.SUBMIT_PARCEL_EXTRA, _package);
     	startActivityForResult(intent, 0);
     }

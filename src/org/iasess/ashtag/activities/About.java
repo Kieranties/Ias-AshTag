@@ -1,9 +1,9 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.R;
+import org.iasess.ashtag.api.CampaignModel;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.widget.TextView;
 
 /**
@@ -22,7 +22,7 @@ public class About extends InvadrActivityBase {
 		
 		//Load the HTML content from resources
 		TextView tv = (TextView)findViewById(R.id.textAboutBlurb);
-		String content = getResources().getString(R.string.about_blurb);
-		tv.setText(Html.fromHtml(content));
+		CampaignModel model = CampaignModel.getInstance();
+		tv.setText(model.getAbout());
 	}
 }

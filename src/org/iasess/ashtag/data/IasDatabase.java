@@ -12,12 +12,12 @@ public class IasDatabase extends SQLiteOpenHelper {
 	/**
 	 * Database instance name 
 	 */
-	private static final String DATABASE_NAME = "IAS.db";
+	private static final String DATABASE_NAME = "ASHTAG.db";
 	
     /**
      * Current database version
      */
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 1;
     
     /**
      * Constructor method
@@ -34,7 +34,7 @@ public class IasDatabase extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        TaxaStore.create(db);
+        TaxonStore.create(db);
         ImageStore.create(db);
     }
 
@@ -44,7 +44,7 @@ public class IasDatabase extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		TaxaStore.upgrade(db, oldVersion, newVersion);		
+		TaxonStore.upgrade(db, oldVersion, newVersion);		
 		ImageStore.upgrade(db, oldVersion, newVersion);
 	}
 			

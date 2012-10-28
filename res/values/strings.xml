@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_title">Invasive Alien Species</string>
-    <string name="app_name">Invadr</string>
+    <string name="app_title">AshTag</string>
+    <string name="app_caption">Help halt the spread of the\r\nAsh tree \'die back\' fungus.</string>
+    <string name="app_name">AshTag</string>
     <string name="add_sighting">Add a sighting</string>
-    <string name="view_gallery">View the gallery</string>
+    <string name="view_gallery">Identification Guide</string>
     <string name="about">About</string>
     <string name="settings">Settings</string>
     <string name="add_photo">Add Photo</string>
     <string name="check_photo">How does this look?</string>
     <string name="retake_photo">(Tap picture to change)</string>
-    <string name="select_taxa">Select Taxa</string>
+    <string name="select_taxa">ID guide</string>
     <string name="summary">Summary</string>
     <string name="location">Location</string>
     <string name="photo">Photo</string>
@@ -20,13 +21,13 @@
     <string name="gallery">Gallery</string>
     <string name="your_selected_image">Your selected image</string>
     <string name="settings_blurb">If you have a user on http://ias-ess.org you can enter your username below to allow your sightings to be attributed to you.  You can also put your email address in - and if you don\'t have a user, you can make one later with the same email address and keep your old sightings.</string>
-    <string name="username">Username or email address:</string>
+    <string name="username">YourEmailAddress@example.com</string>
     <string name="register">Not got a username yet?  Register here:\n http://ias-ess.org/accounts/register</string>
-    <string name="username_hint">ias-ess.org username or email</string>
+    <string name="username_hint">YourEmailAddress@example.com</string>
     <string name="taxa_image">Taxa image</string>
     <string name="taxa_selector">Taxa selector</string>
     <string name="sightings">Sightings:</string>
-    <string name="rank">Rank:</string>
+    <string name="source">Source: </string>
     <string name="about_blurb">
         <![CDATA[
         	<p>Welcome to invadr! This app accompanies the website <a href="http://ias-ess.org">http://ias-ess.org</a> - the unified Invasive Alien Species (IAS) sighting and monitoring website.</p>

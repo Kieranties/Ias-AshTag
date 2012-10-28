@@ -14,7 +14,9 @@
         android:text="@string/select_taxa"
         android:textAppearance="?android:attr/textAppearanceLarge"	        
         android:textColor="@color/white"
-        android:background="@color/ias_main" />
+        android:background="@color/ias_main"
+        android:ellipsize="end"
+        android:singleLine="true" />
 
     <ListView
         android:id="@+id/listTaxa"

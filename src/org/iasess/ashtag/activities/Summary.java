@@ -5,6 +5,7 @@ import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
 import org.iasess.ashtag.api.ApiHandler;
+import org.iasess.ashtag.api.CampaignModel;
 import org.iasess.ashtag.api.SubmissionResponse;
 
 import android.app.Activity;
@@ -197,7 +198,7 @@ public class Summary extends MapActivity{
 	 */
 	private void setTaxa(){		
 		TextView tv = (TextView)findViewById(R.id.textSelectedTaxa);
-		tv.setText(_submitParcel.getTaxonName());
+		tv.setText(CampaignModel.getInstance().getTaxonCommonName());
 	}
     
     /**

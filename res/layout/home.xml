@@ -5,22 +5,53 @@
     android:gravity="center_horizontal"
     android:padding="15dp"
     android:id="@+id/RootView" >
-
+    
+     <ImageView
+        android:id="@+id/info"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/about"      
+        android:src="@drawable/ic_menu_info_details" />
+   
     <ImageView
         android:id="@+id/imageBanner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"        
+        android:contentDescription="@string/app_title"
+        android:src="@drawable/banner"
+        android:layout_below="@+id/info" />
+    
+    <TextView 
+        android:id="@+id/appCaption"
+        android:text="@string/app_caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:contentDescription="@string/app_title"
-        android:src="@drawable/iasbanner" />
+        android:layout_below="@+id/imageBanner"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:paddingTop="5dp"
+        />
 
+    <EditText
+        android:id="@+id/editUsername"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/username_hint"
+        android:layout_below="@+id/appCaption"
+        android:gravity="center_horizontal"
+        android:inputType="textEmailAddress" />
+    
     <LinearLayout
         android:id="@+id/buttonWrap"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignLeft="@+id/imageBanner"
         android:layout_alignRight="@+id/imageBanner"
-        android:layout_below="@+id/imageBanner"
+        android:layout_below="@+id/editUsername"
         android:orientation="vertical"
         android:weightSum="1" >
 
@@ -28,12 +59,12 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight=".033" />
-        
+  
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight=".465"
+            android:layout_weight="0.45"
             android:background="@color/ias_main"
             android:onClick="onAddPhotoClick"
             android:text="@string/add_sighting"
@@ -44,17 +75,23 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight=".033" />
-
+
         <Button
             android:id="@+id/buttonGallery"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight=".465"
+            android:layout_weight="0.45"
             android:background="@color/ias_main"
             android:onClick="onViewGalleryClick"
             android:text="@string/view_gallery"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white" />
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".033" />
+
     </LinearLayout>
 
 </RelativeLayout>

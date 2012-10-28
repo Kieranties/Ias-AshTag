@@ -10,21 +10,20 @@ import org.apache.http.entity.mime.content.StringBody;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SubmitParcel extends TaxonParcel implements Parcelable {
+public class SubmitParcel implements Parcelable {
 	public static final String SUBMIT_PARCEL_EXTRA = "org.iasess.android.submitparcel";
 	private String _imgPath;	
 	private double _latitude;
 	private double _longitude;
 	private boolean _isExternal;
+	private long _taxa = 100004;
 
 	public SubmitParcel(String imgPath) {
-		super(-1, null);
 		setImagePath(imgPath);
 	}
 
 	private SubmitParcel(Parcel in) {
 		//these need to be taken out in the order they were added in!
-		super(in);
 		_imgPath = in.readString();
         _latitude = in.readDouble();
         _longitude = in.readDouble();
@@ -67,7 +66,7 @@ public class SubmitParcel extends TaxonParcel implements Parcelable {
 					new StringBody(AshTagApp.getUsernamePreferenceString()));
 			map.put("location", new StringBody("POINT(" + _longitude + " "
 					+ _latitude + ")"));
-			map.put("taxon", new StringBody(Long.toString(_taxonId)));
+			map.put("taxon", new StringBody(Long.toString(_taxa)));
 			File image = new File(_imgPath);
 			map.put("photo", new FileBody(image));
 		} catch (Exception ex) {
@@ -84,7 +83,6 @@ public class SubmitParcel extends TaxonParcel implements Parcelable {
 	}
 
 	public void writeToParcel(Parcel dest, int flags) {
-		super.writeToParcel(dest, flags);
 		dest.writeString(_imgPath);
 		dest.writeDouble(_latitude);
 		dest.writeDouble(_longitude);

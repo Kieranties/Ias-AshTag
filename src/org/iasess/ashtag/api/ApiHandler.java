@@ -3,10 +3,7 @@ package org.iasess.ashtag.api;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.iasess.ashtag.AshTagApp;
-import org.iasess.ashtag.Logger;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
 
@@ -43,20 +40,22 @@ public class ApiHandler {
 	 */
 	private static String API_SIGHTING = AshTagApp.getResourceString(R.string.ias_sighting);
 		
+	
+	private static String ASHTAG_CAPAIGN = AshTagApp.getResourceString(R.string.ashtag_campaign);
 	/**
 	 * Requests the collection of Taxa from the API
 	 * 
 	 * @return and ArrayList of {@link TaxaItem}
 	 */
-	public static ArrayList<TaxaItem> getTaxa(){
+	public static ArrayList<TaxonItem> getTaxa(){
 		try {
 			//get service response
 			String resp = HttpHandler.getResponseString(composeApiUrl(API_TAXA_GALLERY));
 			
 			//process through gson
 			Gson gson = new Gson();
-        	Type collectionType = new TypeToken<ArrayList<TaxaItem>>(){}.getType();
-        	ArrayList<TaxaItem> items = gson.fromJson(resp, collectionType);
+        	Type collectionType = new TypeToken<ArrayList<TaxonItem>>(){}.getType();
+        	ArrayList<TaxonItem> items = gson.fromJson(resp, collectionType);
         	return items;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -88,43 +87,19 @@ public class ApiHandler {
 		return null;
 	}
 	
-	/**
-	 * Validates a username against the API
-	 * @param textValue The username or email to validate
-	 * @return a {@link UserCheckResponse} of the validation results
-	 */
-	public static UserCheckResponse checkUser(String textValue){
+	public static CampaignModel GetCampaignDetails(){
 		try {
 			//get service response
-			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("un_or_e", textValue));
-			String resp = HttpHandler.getResponseString(composeApiUrl(API_USER_CHECK), params);
+			String resp = HttpHandler.getResponseString(composeApiUrl(ASHTAG_CAPAIGN));
 			
 			//process through gson
 			Gson gson = new Gson();
-			return gson.fromJson(resp, UserCheckResponse.class);
-			
+        	Type modelType = new TypeToken<CampaignModel>(){}.getType();
+        	CampaignModel model = gson.fromJson(resp, modelType);
+        	return model;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
-	 * Fetches a byte array for a given image from the site
-	 * 
-	 * @param url The URL of the requested image
-	 * @param isRelative If true the API_BASE will be prepended to the url
-	 * @return The byte[] of image data
-	 */
-	public static byte[] getByteArray(String url, boolean isRelative){
-		try {
-			if(isRelative) url = API_BASE + url;
-			
-			return HttpHandler.getResponseByteArray(url);
-		} catch (Exception e) {
-			Logger.debug("Failed fetching image at: " + url);
 		}
 		return null;
 	}
