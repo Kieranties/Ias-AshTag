@@ -59,7 +59,7 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
 		});
 		
 		String site = CampaignModel.getInstance().getSite(); 
-		if(site == null) new CampaignUpdate().execute();
+		if(site == null || site.length() == 0) new CampaignUpdate(false).execute();
     }
     
     	
@@ -148,8 +148,15 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
 		 * The progress dialog to display while processing
 		 */
 		private ProgressDialog _dlg;
+		private boolean _displayDetails;
 		
+		public CampaignUpdate(boolean displayDetails){
+			_displayDetails = displayDetails;
+		}
 		
+		public CampaignUpdate(){
+			_displayDetails = true;
+		}
 		/**
 		 * Displays the progress dialog before executing the async task
 		 * 
@@ -183,16 +190,17 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
 	     */
 	    protected void onPostExecute(CampaignModel result) {
 	    	if(result != null){
-	    		result.save();
-	    		
+	    		result.save();	    		
 	    	} else {
 	    		AshTagApp.makeToast("Could not get campaign details");
 	    	}
 	    	
 	    	_dlg.dismiss();
 	    	
-	    	Intent intent = new Intent(Home.this, About.class);
-	    	startActivity(intent);
+	    	if(_displayDetails){
+	    		Intent intent = new Intent(Home.this, About.class);
+	    		startActivity(intent);
+	    	}
 	    }
 	}
 }
