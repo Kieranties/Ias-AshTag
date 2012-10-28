@@ -2,7 +2,6 @@ package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.R;
-import org.iasess.ashtag.SubmitParcel;
 import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.data.ImageStore;
 import org.iasess.ashtag.data.TaxonStore;

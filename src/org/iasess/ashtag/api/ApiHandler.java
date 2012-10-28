@@ -29,12 +29,7 @@ public class ApiHandler {
 	 * The URL partial for Taxa Gallery requests
 	 */
 	private static String API_TAXA_GALLERY = AshTagApp.getResourceString(R.string.ias_taxa_gallery);
-	
-	/**
-	 * The URL partial for Username validation requests 
-	 */
-	private static String API_USER_CHECK = AshTagApp.getResourceString(R.string.ias_user_check);
-	
+		
 	/**
 	 * The URL partial for submission requests
 	 */
