@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"    
+    android:orientation="vertical"
+    android:id="@+id/RootView" >
+
+    <TextView
+        android:id="@+id/textBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/ias_main"
+        android:gravity="center"
+        android:height="35dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white"
+        android:ellipsize="end"
+        android:layout_marginBottom="15dp" />
+    
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:id="@+id/layoutInnerScroll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"            
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+	        android:paddingRight="15dp" >
+            
+            <Gallery
+			    android:id="@+id/gallery"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="5dp"
+			    android:layout_marginRight="5dp"
+			    android:spacing="10dp"
+			    android:visibility="gone" />
+            
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/your_selected_image"
+                android:background="@color/ias_blue"                
+                android:layout_marginBottom="5dp"	     
+                android:padding="1dp"
+                android:visibility="gone"
+                android:onClick="onSingleImageClick" />      
+            
+            <TextView 
+                android:id="@+id/rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/ias_blue"               
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="5dp"/>
+            
+            <TextView 
+                android:id="@+id/scientific_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/ias_blue"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="italic"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="5dp"/>
+            
+            <TextView
+                android:id="@+id/textDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp" />
+                   
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

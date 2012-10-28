@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ias_base">http://ias-ess.org</string>
+    <string name="ias_api_version">/api</string>
+    <string name="ias_taxa_gallery">/taxa/gallery</string>
+    <string name="ias_sighting">/sighting</string>
+    <string name="ias_user_check">/user_check</string>
+    <string name="ias_taxon_url">/ias/taxon/</string> 
+</resources>

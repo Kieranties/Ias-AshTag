@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/RootView" >
+    
+    <TextView
+        android:id="@+id/textBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:height="35dp"
+        android:text="@string/select_taxa"
+        android:textAppearance="?android:attr/textAppearanceLarge"	        
+        android:textColor="@color/white"
+        android:background="@color/ias_main" />
+
+    <ListView
+        android:id="@+id/listTaxa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/ias_blue"
+  		android:dividerHeight="0.5sp" >
+    </ListView>
+
+</LinearLayout>

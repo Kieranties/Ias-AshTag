@@ -1,0 +1,7 @@
+.settings
+[bB]in/
+[gG]en/
+.project
+default.properties
+proguard.cfg
+.classpath
