@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:padding="15dp"
-    android:id="@+id/RootView" >
+    android:id="@+id/rootView" >
     
      <ImageView
         android:id="@+id/info"

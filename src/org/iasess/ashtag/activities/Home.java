@@ -13,44 +13,56 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 /**
  * Controls the 'Home' Activity view
  */
-public class Home extends InvadrActivityBase implements OnEditorActionListener {
+public class Home extends InvadrActivityBase {//implements OnEditorActionListener {
+    
+	private EditText _username;
 	
-	private EditText _editText;
-	
-    /**
+	/**
      * Initialises the content of the Activity
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
-        
-        //find the edit box
-		_editText = (EditText) findViewById(R.id.editUsername);
-	
-		// set from application preferences
-		_editText.setText(AshTagApp.getPreferenceString(AshTagApp.PREFS_USERNAME));
-	
-		// attach listener for focus lost events
-		_editText.setOnEditorActionListener(this);
+        setContentView(R.layout.home);              
+    	        
+        //populate the username box
+        _username = (EditText) findViewById(R.id.editUsername);
+        _username.setText(AshTagApp.getPreferenceString(AshTagApp.PREFS_USERNAME));
 		CheckUsername();
 		
+        //hack to calculate when the keyboard is displayed
+        // http://stackoverflow.com/questions/2150078/how-to-check-visibility-of-software-keyboard-in-android
+		final View activityRootView = findViewById(R.id.rootView);
+		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			boolean checkOnNext;
+			public void onGlobalLayout() {
+				if(checkOnNext){
+					CheckUsername();
+					checkOnNext = false;
+				} else {
+				    Rect r = new Rect();
+				    activityRootView.getWindowVisibleDisplayFrame(r);		
+				    int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+				    checkOnNext = heightDiff > 100;
+				}
+			 }
+		});
+		
+		// Hook up the click listener for the campaign info
 		ImageView img = (ImageView) findViewById(R.id.info);
 		img.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
@@ -58,6 +70,7 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
 		    }
 		});
 		
+		//Check to see if we've fetched the campaign details before
 		String site = CampaignModel.getInstance().getSite(); 
 		if(site == null || site.length() == 0) new CampaignUpdate(false).execute();
     }
@@ -108,25 +121,8 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
 		}		
 	}
     
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		
-		switch(actionId){
-			case EditorInfo.IME_ACTION_DONE:
-			case EditorInfo.IME_ACTION_GO:
-			case EditorInfo.IME_ACTION_NEXT:
-				CheckUsername();
-				return false;
-		}
-		
-		if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-			CheckUsername();
-		}
-		
-		return false;
-	}
-    
     private void CheckUsername(){
-    	String text = _editText.getText().toString().trim();
+    	String text = _username.getText().toString().trim();
     	Button btn = (Button) findViewById(R.id.buttonSubmit);
     	if(android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()){
     		AshTagApp.setPreferenceString(AshTagApp.PREFS_USERNAME, text);    		
