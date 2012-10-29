@@ -54,20 +54,23 @@ public class TaxonStore extends IasDatabase {
 	}
 	
 	public void update(ArrayList<TaxonItem> collection){		
-		SQLiteDatabase db = this.getWritableDatabase();
-		TaxonStore.recreate(db);
-		db.beginTransaction();
-		ImageStore imgStore = new ImageStore(_context);
-		try{
-			for(TaxonItem item : collection){
-				long id = db.insert(TABLE_NAME, null, getContent(item));
-				imgStore.update(item.getSizes(), id, db);
+		if(collection != null && collection.size() > 0)
+		{
+			SQLiteDatabase db = this.getWritableDatabase();
+			TaxonStore.recreate(db);
+			db.beginTransaction();
+			ImageStore imgStore = new ImageStore(_context);
+			try{
+				for(TaxonItem item : collection){
+					long id = db.insert(TABLE_NAME, null, getContent(item));
+					imgStore.update(item.getSizes(), id, db);
+				}
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
 			}
-			db.setTransactionSuccessful();
-		} finally {
-			db.endTransaction();
+			db.close();
 		}
-		db.close();
 	}
 	
 	public Cursor getAll() { 
