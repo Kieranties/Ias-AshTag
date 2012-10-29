@@ -266,7 +266,7 @@ public class Summary extends MapActivity{
 	            Intent browse = new Intent(Intent.ACTION_VIEW, uriBuilder.build());
 	            
 	    		if(_submitParcel.getIsExternal()){
-	    			startActivityForResult(Intent.createChooser(browse,"Select Browser"), InvadrActivityBase.CLOSE_ALL);
+	    		//	startActivityForResult(Intent.createChooser(browse,"Select Browser"), InvadrActivityBase.CLOSE_ALL);
 	    			setResult(InvadrActivityBase.CLOSE_ALL);
 	    			finish();
 	    		} else {
@@ -275,7 +275,7 @@ public class Summary extends MapActivity{
 		            home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //resets the activity stack
 		            startActivity(home);
 		            
-	    			startActivity(Intent.createChooser(browse,"Select Browser"));
+	    			//startActivity(Intent.createChooser(browse,"Select Browser"));
 	    		}	    		 
 	    	}  
 	    	else
