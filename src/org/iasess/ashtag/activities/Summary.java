@@ -258,15 +258,8 @@ public class Summary extends MapActivity{
 	    	_dlg.dismiss();
 	    	if(result.getId() != Integer.MIN_VALUE){
 	    		AshTagApp.makeToast("Submitted!");    		
-	    		 
-	    		//display the success page to the user
-	            //add in device query string param
-	            Uri uri = Uri.parse(result.getUrl());
-	            Builder uriBuilder = uri.buildUpon().appendQueryParameter("device", "android");
-	            Intent browse = new Intent(Intent.ACTION_VIEW, uriBuilder.build());
-	            
+	    		 	            
 	    		if(_submitParcel.getIsExternal()){
-	    		//	startActivityForResult(Intent.createChooser(browse,"Select Browser"), InvadrActivityBase.CLOSE_ALL);
 	    			setResult(InvadrActivityBase.CLOSE_ALL);
 	    			finish();
 	    		} else {
@@ -274,8 +267,6 @@ public class Summary extends MapActivity{
 		    		Intent home = new Intent(Summary.this, Home.class);
 		            home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //resets the activity stack
 		            startActivity(home);
-		            
-	    			//startActivity(Intent.createChooser(browse,"Select Browser"));
 	    		}	    		 
 	    	}  
 	    	else
