@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 /**
  * Controls the 'TaxaDetails' Activity view
@@ -114,14 +117,36 @@ public class TaxaDetails extends InvadrActivityBase {
 		protected void onPostExecute(String result) {		
 			if(result == null){
 				AshTagApp.makeToast("No images found...");
+				_dlg.dismiss();
 			} else {
 				image = result;
-				ImageView iv = getImageView();
-				ImageLoader.getInstance().displayImage(image, iv);
-				iv.setVisibility(View.VISIBLE);
+				final ImageView iv = getImageView();
+				ImageLoader.getInstance().displayImage(image, iv, new ImageLoadingListener() {
 				
-			}
-			_dlg.dismiss();
+					
+					public void onLoadingFailed(FailReason failReason) {
+						AshTagApp.makeToast("No images found...");
+						_dlg.dismiss();
+					}
+
+					
+					public void onLoadingComplete(Bitmap loadedImage) {
+						iv.setVisibility(View.VISIBLE);
+						_dlg.dismiss();
+					}
+
+					
+					public void onLoadingCancelled() {
+						// Do nothing
+					}
+
+
+					public void onLoadingStarted() {
+						// TODO Auto-generated method stub
+						
+					}
+				});				
+			}			
 		}
 	}
 }
