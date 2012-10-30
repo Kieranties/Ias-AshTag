@@ -6,10 +6,7 @@
     <string name="add_sighting">Add a sighting</string>
     <string name="view_gallery">Identification Guide</string>
     <string name="about">About</string>
-    <string name="settings">Settings</string>
     <string name="add_photo">Add Photo</string>
-    <string name="check_photo">How does this look?</string>
-    <string name="retake_photo">(Tap picture to change)</string>
     <string name="select_taxa">ID guide</string>
     <string name="summary">Summary</string>
     <string name="location">Location</string>
@@ -17,32 +14,11 @@
     <string name="taxa">Taxa</string>
     <string name="done">Done</string>
     <string name="next">Next</string>
-    <string name="details">Details</string>
-    <string name="gallery">Gallery</string>
     <string name="your_selected_image">Your selected image</string>
-    <string name="settings_blurb">If you have a user on http://ias-ess.org you can enter your username below to allow your sightings to be attributed to you.  You can also put your email address in - and if you don\'t have a user, you can make one later with the same email address and keep your old sightings.</string>
-    <string name="username">YourEmailAddress@example.com</string>
-    <string name="register">Not got a username yet?  Register here:\n http://ias-ess.org/accounts/register</string>
     <string name="username_hint">YourEmailAddress@example.com</string>
     <string name="taxa_image">Taxa image</string>
     <string name="taxa_selector">Taxa selector</string>
-    <string name="sightings">Sightings:</string>
     <string name="source">Source: </string>
-    <string name="about_blurb">
-        <![CDATA[
-        	<p>Welcome to invadr! This app accompanies the website <a href="http://ias-ess.org">http://ias-ess.org</a> - the unified Invasive Alien Species (IAS) sighting and monitoring website.</p>
-        	<p>invadr allows you to contribute to this important cause. If you think you spot an invasive (check out the gallery!) - snap it and send it. You\'ll be asked to fill out a very short questionnaire (typically up to 5 questions) and your sighting will be added to the website after verification by an expert.</p>
-        	<p>Invasive Alien Species (IAS) exert a persistent, pervasive threat to UK biodiversity and also incur significant socioeconomic costs to the UK economy (Child & Wade 2000, Dehnen-Schmutz, 2004, Williams et al. 2010). At the UK scale, the annual the annual economic cost of IAS has been estimated to be approximately £165 million yr-1; globally, this figure is in the region of US$120 billion yr-1 (Pimentel 2005).</p>
-        	<p>As the ecological and socioeconomic impacts of IAS are becoming increasingly apparent, at a range of spatial and ecological scales; efforts are being made to avoid invasions or to manage and control established invaders (Joshi et al. 2004). Timely, high-quality population and spatial data for these invasive taxa is essential for: 1) ecological analyses; 2) informing stakeholders and 3) informing “best practice” management and control efforts (Joshi et al. 2004, Ustin et al. 2002).</p>
-        	<p>References</p>
-        	<p>Child, L. & Wade, M. (2000), The Japanese Knotweed Manual: The Management and Control of an Invasive Weed. (pp. 4 - 20). DPS Partnership Ltd., Burgess Hill, West Sussex.</p>
-        	<p>Dehnen-Schmutz, Perrings, C. & Williamson, M. (2004). Controlling Rhododendron ponticum in the British Isles: an economic analysis. Journal of Environmental Management 70: 323–332.</p>
-        	<p>Joshi, C., de Leeuw, J. & van Duren, I. (2004). Remote sensing and GIS applications for mapping and spatial modelling of invasive species. International Society for Photogrammetry and Remote Sensing (ISPRS) 2004: 669-677</p>
-        	<p>Pimentel, D., Zuniga, R. & Morrison, D. (2005). Update on the environmental and economic costs associated with alien-invasive species in the United States. Ecological Economics 52(3): 273-288.</p>
-        	<p>Ustin, S., DiPietro, D., Olmstead, K., Underwood, E. & Scheer, G. (2001). Hyperspectral remote sensing for invasive species detection and mapping. Papers of the American Chemical Society 2001: 221.</p>
-        	<p>Williams, F., Eschen, R., Harris, A., Djeddour, D., Pratt, C., Shaw, R., Varia, S., Lamontagne-Godwin, J., Thomas, S. & Murphy, S. (2010). The Economic Cost of Invasive Non-Native Species on Great Britain. CABI. Available at <a href="http://www.cabi.org">http://www.cabi.org</a> [Accessed 15/11/11].</p>
-        ]]>
-    </string>
     <string-array name="camera_options">
         <item>Take Photo</item>
         <item>Choose Existing</item>
