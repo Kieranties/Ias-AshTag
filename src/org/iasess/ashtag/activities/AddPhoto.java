@@ -2,17 +2,19 @@ package org.iasess.ashtag.activities;
 
 import java.net.URI;
 
+import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Controls the 'AddPhoto' Activity view
@@ -97,7 +99,7 @@ public class AddPhoto extends InvadrActivityBase {
      */
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+		//super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == Activity.RESULT_OK){
 			//we're expecting the intent to have been an image type initiated by this app
 			String path = ImageHandler.getImagePathFromIntentResult(resultCode, requestCode, data);
@@ -115,8 +117,9 @@ public class AddPhoto extends InvadrActivityBase {
     private void setImageView(){
     	if(_package != null){
 	    	ImageView iv = (ImageView)findViewById(R.id.imageView);
-	    	Bitmap bm = ImageHandler.getBitmap(_package.getImagePath());    	
-	    	iv.setImageBitmap(bm);
+	    	String imagePath = "file://" + _package.getImagePath();
+	    	ImageLoader.getInstance().displayImage(imagePath, iv);
+	    	AshTagApp.makeToast("Tap image to change");
     	}
     }
 }

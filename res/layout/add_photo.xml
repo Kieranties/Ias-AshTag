@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:id="@+id/RootView">
+    android:id="@+id/rootView">
     
     <TextView
         android:id="@+id/textBanner"
@@ -10,55 +10,38 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:height="35dp"
+        android:layout_marginBottom="5dp"
         android:text="@string/add_photo"
         android:textAppearance="?android:attr/textAppearanceLarge"	        
         android:textColor="@color/white"
         android:background="@color/ias_main" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/textBanner"
-        android:gravity="center">
-        
-        <TextView
-        android:id="@+id/textCheckPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/check_photo"
-        android:textColor="@color/ias_blue"
-        android:layout_gravity="center"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/textRetakePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/retake_photo"
-        android:layout_gravity="center" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxHeight="252dp"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:layout_margin="15dp"
-        android:contentDescription="@string/your_selected_image"
-        android:onClick="onImageClick"
-        android:background="@color/ias_blue"
-        android:padding="1dp" />
     
     <Button
        android:id="@+id/buttonNext"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
+       android:layout_width="fill_parent"
+       android:layout_height="35dp"
+       android:layout_margin="5dp"
        android:layout_gravity="center"
-       android:width="120dp"
+       android:gravity="center"
        android:text="@string/next"
-       android:onClick="onNextClick" />
-        
-    </LinearLayout>
+       android:onClick="onNextClick" 
+       android:layout_alignParentBottom="true"
+       android:textAppearance="?android:attr/textAppearanceLarge"	     
+       android:textColor="@color/white"
+       android:background="@color/ias_main" />
+    
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_above="@+id/buttonNext"
+        android:layout_below="@+id/textBanner"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"
+        android:contentDescription="@string/your_selected_image"
+        android:onClick="onImageClick" />       
+    
 </RelativeLayout>
