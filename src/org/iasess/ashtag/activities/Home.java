@@ -16,19 +16,24 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 /**
  * Controls the 'Home' Activity view
  */
-public class Home extends InvadrActivityBase {//implements OnEditorActionListener {
+public class Home extends InvadrActivityBase implements OnEditorActionListener {
     
 	private EditText _username;
+	private boolean _checkOnKeyboardHide = false;
 	
 	/**
      * Initialises the content of the Activity
@@ -42,22 +47,22 @@ public class Home extends InvadrActivityBase {//implements OnEditorActionListene
         //populate the username box
         _username = (EditText) findViewById(R.id.editUsername);
         _username.setText(AshTagApp.getPreferenceString(AshTagApp.PREFS_USERNAME));
+        _username.setOnEditorActionListener(this);
 		CheckUsername();
 		
         //hack to calculate when the keyboard is displayed
         // http://stackoverflow.com/questions/2150078/how-to-check-visibility-of-software-keyboard-in-android
 		final View activityRootView = findViewById(R.id.rootView);
 		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			boolean checkOnNext;
+			
 			public void onGlobalLayout() {
-				if(checkOnNext){
-					CheckUsername();
-					checkOnNext = false;
+				if(_checkOnKeyboardHide){
+					CheckUsername();					
 				} else {
 				    Rect r = new Rect();
 				    activityRootView.getWindowVisibleDisplayFrame(r);		
 				    int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-				    checkOnNext = heightDiff > 100;
+				    _checkOnKeyboardHide = heightDiff > 100;
 				}
 			 }
 		});
@@ -133,8 +138,26 @@ public class Home extends InvadrActivityBase {//implements OnEditorActionListene
     		btn.setBackgroundColor(getResources().getColor(R.color.ias_main_fade));
     		AshTagApp.makeToast("Invalid email address");
     	}
+    	_checkOnKeyboardHide = false;
     }
     
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		
+		switch(actionId){
+			case EditorInfo.IME_ACTION_DONE:
+			case EditorInfo.IME_ACTION_GO:
+			case EditorInfo.IME_ACTION_NEXT:
+				CheckUsername();
+				return false;
+		}
+		
+		if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+			CheckUsername();
+		}
+		
+		return false;
+	}
+
     /**
 	 * Class to process the checking of a username in a separate thread
 	 */
