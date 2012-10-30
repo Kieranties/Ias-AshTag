@@ -1,11 +1,9 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
-import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
 import org.iasess.ashtag.api.ApiHandler;
-import org.iasess.ashtag.api.CampaignModel;
 import org.iasess.ashtag.api.SubmissionResponse;
 
 import android.app.Activity;
@@ -13,14 +11,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -72,9 +67,7 @@ public class Summary extends MapActivity{
         setContentView(R.layout.summary);
         _submitParcel = getIntent().getParcelableExtra(SubmitParcel.SUBMIT_PARCEL_EXTRA);
         		
-        initMapComponents();
-        setTaxa();
-        setImageView();	    
+        initMapComponents();    
     }
        
 	/**
@@ -190,25 +183,7 @@ public class Summary extends MapActivity{
 		//add overlays to map view
 		_mapView.getOverlays().add(_locationOverlay);
 	}
-	
-	/**
-	 * Sets the details for the selected Taxa on the page
-	 */
-	private void setTaxa(){		
-		TextView tv = (TextView)findViewById(R.id.textSelectedTaxa);
-		tv.setText(CampaignModel.getInstance().getTaxonCommonName());
-	}
-    
-    /**
-     * Sets the details for the selected image on the page
-     */
-    private void setImageView(){
-    	ImageView iv = (ImageView)findViewById(R.id.imageView);
-    	Bitmap bm = ImageHandler.getBitmap(_submitParcel.getImagePath());
-    	
-    	iv.setImageBitmap(bm);   
-    }
-    
+	    
     /**
      * Class to handle the submission of details in a separate thread
      *

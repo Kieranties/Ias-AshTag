@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,90 +14,27 @@
         android:height="35dp"
         android:text="@string/summary"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white" />    
+    <Button
+        android:id="@+id/buttonDone"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="@color/ias_main"
+        android:gravity="center"
+        android:onClick="onDoneClick"
+        android:text="@string/done"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/white" />
     
-    <ScrollView
-        android:id="@+id/scrollView"
+    <com.google.android.maps.MapView
+        android:id="@+id/mapView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:fillViewport="true" >
+        android:layout_above="@id/buttonDone"
+        android:layout_below="@id/textBanner"
+        android:apiKey="@string/mapsKey" />
 
-        <LinearLayout
-            android:id="@+id/layoutInnerScroll"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="15dp" >
-
-            <TextView
-                android:id="@+id/textLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/location"
-                android:textColor="@color/ias_blue"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <com.google.android.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="fill_parent"
-                android:layout_height="252dp"
-                android:apiKey="@string/mapsKey"
-                android:background="@color/ias_blue"
-                android:padding="1dp" />
-
-            <TextView
-                android:id="@+id/textTaxa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/taxa"
-                android:textColor="@color/ias_blue"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/textSelectedTaxa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="@string/taxa" />
-
-            <TextView
-                android:id="@+id/textPhoto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/photo"
-                android:textColor="@color/ias_blue"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:background="@color/ias_blue"
-                android:contentDescription="@string/your_selected_image"
-                android:maxHeight="252dp"
-                android:padding="1dp" />
-
-            <Button
-                android:id="@+id/buttonDone"
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
-                android:onClick="onDoneClick"
-                android:text="@string/done"
-		       android:textAppearance="?android:attr/textAppearanceLarge"	     
-		       android:textColor="@color/white"
-		       android:background="@color/ias_main" />
-            
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+</RelativeLayout>
