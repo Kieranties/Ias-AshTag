@@ -4,7 +4,5 @@
     <string name="ias_api_version">/api</string>
     <string name="ias_taxa_gallery">/taxa/100004/gallery</string>
     <string name="ias_sighting">/sighting</string>
-    <string name="ias_user_check">/user_check</string>
-    <string name="ias_taxon_url">/ias/taxon/</string> 
     <string name="ashtag_campaign">/campaign/ashtag</string>
 </resources>
