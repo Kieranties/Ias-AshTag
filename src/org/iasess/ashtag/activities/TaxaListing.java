@@ -1,6 +1,7 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.data.ImageStore;
@@ -15,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -39,12 +41,28 @@ public class TaxaListing extends InvadrActivityBase {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.taxa_listing);
+		
+		if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(AshTagApp.getUsernamePreferenceString()).matches())){
+    		Button btn = (Button) findViewById(R.id.buttonSubmit);
+    		btn.setEnabled(false);
+    		btn.setBackgroundColor(getResources().getColor(R.color.ias_main_fade));
+    	}
+		
 		new PopulateList().execute(""); // <- TODO: ugly!
 		
 		ListView lv = (ListView) findViewById(R.id.listTaxa);
 		lv.setOnItemClickListener(new GalleryViewListener());
 	}
 
+	/**
+     * Handler to pass control to the image selection process
+     * 
+     * @param v The {@link View} which fired the event handler
+     */
+    public void onAddPhotoClick(View v) {
+    	new ImageHandler(this).showChooser();
+    }
+    
 	/**
 	 * Clean up the resources of this Activity when destroyed
 	 * 

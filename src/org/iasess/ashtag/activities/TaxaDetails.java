@@ -1,6 +1,7 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.data.ImageStore;
 import org.iasess.ashtag.data.TaxonStore;
@@ -13,6 +14,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +38,15 @@ public class TaxaDetails extends InvadrActivityBase {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.taxa_details);
+		setContentView(R.layout.taxa_details);	
+    	
+    	if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(AshTagApp.getUsernamePreferenceString()).matches())){
+    		Button btn = (Button) findViewById(R.id.buttonSubmit);
+    		btn.setEnabled(false);
+    		btn.setBackgroundColor(getResources().getColor(R.color.ias_main_fade));
+    	}
+		
+		
 		
 		long taxonId = getIntent().getExtras().getLong("taxonId");
 		
@@ -64,6 +74,14 @@ public class TaxaDetails extends InvadrActivityBase {
 		new PopulateImages().execute(taxonId);
 	}
 	
+	/**
+     * Handler to pass control to the image selection process
+     * 
+     * @param v The {@link View} which fired the event handler
+     */
+    public void onAddPhotoClick(View v) {
+    	new ImageHandler(this).showChooser();
+    }
 
 	@Override
 	protected void onDestroy() {

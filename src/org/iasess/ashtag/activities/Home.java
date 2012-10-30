@@ -46,7 +46,7 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
     	        
         //populate the username box
         _username = (EditText) findViewById(R.id.editUsername);
-        _username.setText(AshTagApp.getPreferenceString(AshTagApp.PREFS_USERNAME));
+        _username.setText(AshTagApp.getUsernamePreferenceString());
         _username.setOnEditorActionListener(this);
 		CheckUsername();
 		
@@ -102,35 +102,11 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
     	startActivity(intent);
     }
     
-    /**
-     * Handles the response of an ActivityResult fired in the context of
-     * this Activity
-     * 
-     * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-     */
-    @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == Activity.RESULT_OK){
-			//we're expecting the intent to be an image intent initiated by this app
-			String selected = ImageHandler.getImagePathFromIntentResult(resultCode, requestCode, data);
-			if(selected != null){
-				//pass data to next activity
-				Intent intent = new Intent(this, AddPhoto.class);
-				intent.putExtra(SubmitParcel.SUBMIT_PARCEL_EXTRA, new SubmitParcel(selected));
-				startActivity(intent);
-			} 
-			else{
-				Logger.warn("Could not get a selected image");
-			}
-		}		
-	}
-    
     private void CheckUsername(){
     	String text = _username.getText().toString().trim();
     	Button btn = (Button) findViewById(R.id.buttonSubmit);
     	if(android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()){
-    		AshTagApp.setPreferenceString(AshTagApp.PREFS_USERNAME, text);    		
+    		AshTagApp.setUsernamePreferenceString(text);    		
     		btn.setEnabled(true);    		
     		btn.setBackgroundColor(getResources().getColor(R.color.ias_main));
     	} else {
