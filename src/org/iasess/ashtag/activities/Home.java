@@ -2,13 +2,10 @@ package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.ImageHandler;
-import org.iasess.ashtag.Logger;
 import org.iasess.ashtag.R;
-import org.iasess.ashtag.SubmitParcel;
 import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.api.CampaignModel;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
