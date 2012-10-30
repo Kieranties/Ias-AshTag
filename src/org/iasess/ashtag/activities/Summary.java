@@ -129,7 +129,7 @@ public class Summary extends MapActivity{
 	protected void onDestroy() {
 	    super.onDestroy();
 	 
-	    AshTagApp.unbindDrawables(findViewById(R.id.RootView));
+	    AshTagApp.unbindDrawables(findViewById(R.id.rootView));
 	    System.gc();
 	}
 	

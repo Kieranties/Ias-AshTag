@@ -33,8 +33,7 @@
         android:layout_alignParentLeft="true"
         android:gravity="center"
         android:paddingBottom="15dp"
-        android:paddingTop="5dp"
-        />
+        android:paddingTop="5dp" />
 
     <EditText
         android:id="@+id/editUsername"

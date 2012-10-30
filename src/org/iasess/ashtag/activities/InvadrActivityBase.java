@@ -42,7 +42,7 @@ public class InvadrActivityBase extends Activity {
 	protected void onDestroy() {
 	    super.onDestroy();
 	 
-	    AshTagApp.unbindDrawables(findViewById(R.id.RootView));
+	    AshTagApp.unbindDrawables(findViewById(R.id.rootView));
 	    System.gc();
 	}
 }
