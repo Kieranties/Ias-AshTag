@@ -44,8 +44,7 @@ public class TaxaListing extends InvadrActivityBase {
 		
 		if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(AshTagApp.getUsernamePreferenceString()).matches())){
     		Button btn = (Button) findViewById(R.id.buttonSubmit);
-    		btn.setEnabled(false);
-    		btn.setBackgroundColor(getResources().getColor(R.color.ias_main_fade));
+    		btn.setVisibility(View.GONE);
     	}
 		
 		new PopulateList().execute(""); // <- TODO: ugly!

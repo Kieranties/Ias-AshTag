@@ -102,8 +102,8 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
     private void CheckUsername(){
     	String text = _username.getText().toString().trim();
     	Button btn = (Button) findViewById(R.id.buttonSubmit);
-    	if(android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()){
-    		AshTagApp.setUsernamePreferenceString(text);    		
+    	AshTagApp.setUsernamePreferenceString(text);
+    	if(android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()){    				
     		btn.setEnabled(true);    		
     		btn.setBackgroundColor(getResources().getColor(R.color.ias_main));
     	} else {
