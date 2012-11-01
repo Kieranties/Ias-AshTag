@@ -17,5 +17,8 @@
 -->
 
 <resources>
-    <color name="pressed_ashtag">#CCb5c693</color>
+    <color name="pressed_ashtag">#CCB5C693</color>
+    <color name="ias_main">#569A43</color>
+    <color name="ias_main_fade">#B5C693</color>
+    <color name="white">#FFFFFF</color>
 </resources>
