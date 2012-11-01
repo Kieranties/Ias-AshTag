@@ -8,11 +8,37 @@ import org.iasess.ashtag.SubmitParcel;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 
-public class InvadrActivityBase extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
+
+public class InvadrActivityBase extends SherlockActivity {
 	
 	protected static int CLOSE_ALL = 909090;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+
+	    int itemId = item.getItemId();
+	    switch (itemId) {
+		    case android.R.id.home:
+		    	Intent i = new Intent();
+                i.setClass(this, Home.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+	            return true;
+	    }
+	
+		return super.onOptionsItemSelected(item);
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
