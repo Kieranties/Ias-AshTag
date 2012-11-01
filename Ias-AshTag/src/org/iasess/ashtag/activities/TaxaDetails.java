@@ -39,13 +39,12 @@ public class TaxaDetails extends InvadrActivityBase {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.taxa_details);	
-    	
+		getSupportActionBar().setTitle(R.string.select_taxa);
+		
     	if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(AshTagApp.getUsernamePreferenceString()).matches())){
     		Button btn = (Button) findViewById(R.id.buttonSubmit);
     		btn.setVisibility(View.GONE);
     	}
-		
-		
 		
 		long taxonId = getIntent().getExtras().getLong("taxonId");
 		
@@ -66,7 +65,7 @@ public class TaxaDetails extends InvadrActivityBase {
 		TextView tvDetail = (TextView)findViewById(R.id.textDetail);
 		tvDetail.setText(detail);
 		
-		TextView tvTitle = (TextView)findViewById(R.id.textBanner);
+		TextView tvTitle = (TextView)findViewById(R.id.textTitle);
 		tvTitle.setText(title);
 				
 	

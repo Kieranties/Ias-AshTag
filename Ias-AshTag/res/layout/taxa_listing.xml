@@ -3,20 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/rootView" >
-    
-    <TextView
-        android:id="@+id/textBanner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/select_taxa"
-        android:textAppearance="?android:attr/textAppearanceLarge"	        
-        android:textColor="@color/white"
-        android:background="@color/ias_main"
-        android:ellipsize="end"
-        android:singleLine="true" />
-        
+    android:id="@+id/rootView" >       
     <Button
         android:id="@+id/buttonSubmit"
         android:layout_width="fill_parent"
@@ -34,8 +21,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/buttonSubmit"
-        android:layout_below="@+id/textBanner"
-        android:divider="@color/ias_blue"
+        android:divider="@android:color/black"
   		android:dividerHeight="0.5sp" >
     </ListView>
 

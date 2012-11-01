@@ -4,20 +4,7 @@
     android:layout_height="match_parent"    
     android:orientation="vertical"
     android:id="@+id/rootView" >
-
-    <TextView
-        android:id="@+id/textBanner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/ias_main"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/white"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:layout_marginBottom="15dp" />
-    
+        
     <Button
        android:id="@+id/buttonSubmit"
        android:layout_width="fill_parent"
@@ -29,14 +16,13 @@
        android:text="@string/add_sighting"
        android:textAppearance="?android:attr/textAppearanceLarge"	     
        android:textColor="@color/white" />
-    
+    
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
         android:layout_above="@+id/buttonSubmit"
-        android:layout_below="@+id/textBanner" >
+        android:fillViewport="true" >
 
         <LinearLayout
             android:id="@+id/layoutInnerScroll"
@@ -45,6 +31,15 @@
             android:orientation="vertical"
             android:paddingLeft="15dp"
 	        android:paddingRight="15dp" >
+	        
+            <TextView
+		       android:id="@+id/textTitle"
+		       android:layout_width="fill_parent"
+		       android:layout_height="wrap_content"
+		       android:gravity="center"
+		       android:textAppearance="?android:attr/textAppearanceMedium" 
+		       android:layout_marginTop="5dp"
+		       android:layout_marginBottom="5dp"/>
             
             <ImageView
                 android:id="@+id/imageView"
@@ -53,8 +48,9 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/your_selected_image"
-                android:background="@color/ias_blue"                
-                android:layout_marginBottom="5dp"	     
+                android:background="@android:color/black"                
+                android:layout_marginBottom="5dp"	 
+                android:layout_marginTop="5dp"    
                 android:padding="1dp"
                 android:visibility="gone" />      
             
@@ -62,7 +58,7 @@
                 android:id="@+id/textSource"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/ias_blue"               
+                android:textColor="@android:color/black"               
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"/>

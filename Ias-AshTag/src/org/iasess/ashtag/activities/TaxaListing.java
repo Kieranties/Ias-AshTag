@@ -41,6 +41,7 @@ public class TaxaListing extends InvadrActivityBase {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.taxa_listing);
+		getSupportActionBar().setTitle(R.string.select_taxa);
 		
 		if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(AshTagApp.getUsernamePreferenceString()).matches())){
     		Button btn = (Button) findViewById(R.id.buttonSubmit);

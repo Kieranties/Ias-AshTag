@@ -19,6 +19,7 @@ public class About extends InvadrActivityBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about);
+		getSupportActionBar().setTitle(R.string.about);
 		
 		//Load the HTML content from resources
 		TextView tv = (TextView)findViewById(R.id.textAboutBlurb);

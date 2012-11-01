@@ -32,6 +32,6 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/ias_blue" />
+        android:textColor="@android:color/black" />
 
 </RelativeLayout>
