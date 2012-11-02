@@ -18,7 +18,7 @@
 
 <resources>
 
-    <style name="Theme.ashtag" parent="@style/Theme.Sherlock.Light">
+    <style name="Theme.ashtag" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_ashtag</item>
         <item name="popupMenuStyle">@style/ashtag_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/ashtag_DropDownListView</item>
@@ -34,10 +34,13 @@
         <item name="android:actionBarStyle">@style/ashtag_solid_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_ashtag</item>
         
-        
+                <!-- Light.DarkActionBar specific -->
+        <item name="actionBarWidgetTheme">@style/Theme.ashtag.widget</item>
+        <item name="android:actionBarWidgetTheme">@style/Theme.ashtag.widget</item>
+
     </style>
 
-    <style name="ashtag_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
+    <style name="ashtag_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_ashtag</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_ashtag</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_ashtag</item>
@@ -49,7 +52,7 @@
         <item name="android:progressBarStyle">@style/ashtag_ProgressBar</item>
     </style>
 
-    <style name="ashtag_transparent_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
+    <style name="ashtag_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
         <item name="background">@drawable/ab_transparent_ashtag</item>
         <item name="progressBarStyle">@style/ashtag_ProgressBar</item>
         
@@ -57,21 +60,21 @@
         <item name="android:progressBarStyle">@style/ashtag_ProgressBar</item>
     </style>
 	
-    <style name="ashtag_PopupMenu" parent="@style/Widget.Sherlock.Light.ListPopupWindow">	
+    <style name="ashtag_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">	
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_ashtag</item>	
     </style>
 	
-    <style name="ashtag_DropDownListView" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
+    <style name="ashtag_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_ashtag</item>
     </style>
 
-    <style name="ashtag_ActionBarTabStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
+    <style name="ashtag_ActionBarTabStyle" parent="@style/Widget.Sherlock.ActionBar.TabView">
         <item name="background">@drawable/tab_indicator_ab_ashtag</item>
 
         <item name="android:background">@drawable/tab_indicator_ab_ashtag</item>
     </style>
 	
-    <style name="ashtag_DropDownNav" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
+    <style name="ashtag_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
         <item name="background">@drawable/spinner_background_ab_ashtag</item>
 
         <item name="android:background">@drawable/spinner_background_ab_ashtag</item>
@@ -79,7 +82,7 @@
         <item name="android:dropDownSelector">@drawable/selectable_background_ashtag</item>
     </style>
     
-    <style name="ashtag_ProgressBar" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
+    <style name="ashtag_ProgressBar" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_ashtag</item>
     </style>
     

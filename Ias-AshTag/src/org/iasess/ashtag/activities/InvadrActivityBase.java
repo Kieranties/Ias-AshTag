@@ -20,9 +20,10 @@ public class InvadrActivityBase extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
+	/*
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 
@@ -38,6 +39,7 @@ public class InvadrActivityBase extends SherlockActivity {
 	
 		return super.onOptionsItemSelected(item);
 	}
+	*/
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -76,6 +76,10 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
 		//Check to see if we've fetched the campaign details before
 		String site = CampaignModel.getInstance().getSite(); 
 		if(site == null || site.length() == 0) new CampaignUpdate(false).execute();
+		
+		
+		
+		
     }
     
     	
