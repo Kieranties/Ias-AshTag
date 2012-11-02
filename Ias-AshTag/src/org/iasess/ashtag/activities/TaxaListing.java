@@ -16,18 +16,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 
+import com.actionbarsherlock.app.SherlockListActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Controls the 'TaxaListing' Activity view
  */
-public class TaxaListing extends InvadrActivityBase {
+public class TaxaListing extends SherlockListActivity {
 
 	private TaxonStore taxonStore = new TaxonStore(TaxaListing.this);
 	private ImageStore imgStore = new ImageStore(TaxaListing.this);
@@ -40,18 +40,12 @@ public class TaxaListing extends InvadrActivityBase {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.taxa_listing);
+		//setContentView(R.layout.taxa_listing);
 		getSupportActionBar().setTitle(R.string.select_taxa);
-		
-		if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(AshTagApp.getUsernamePreferenceString()).matches())){
-    		Button btn = (Button) findViewById(R.id.buttonSubmit);
-    		btn.setVisibility(View.GONE);
-    	}
-		
+				
 		new PopulateList().execute(""); // <- TODO: ugly!
 		
-		ListView lv = (ListView) findViewById(R.id.listTaxa);
-		lv.setOnItemClickListener(new GalleryViewListener());
+		getListView().setOnItemClickListener(new GalleryViewListener());
 	}
 
 	/**
@@ -157,28 +151,33 @@ public class TaxaListing extends InvadrActivityBase {
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
 		protected void onPostExecute(Cursor result) {
-			// Bind the adapter to the list view
-			ListView listView = (ListView) findViewById(R.id.listTaxa);
-			String[] columns = new String[] { TaxonStore.COL_TITLE, TaxonStore.COL_PK};
-			int[] to = new int[] { R.id.textPrimary, R.id.icon };
+			startManagingCursor(result);
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+	                 TaxaListing.this, // Context.
+	                 R.layout.image_list_item,
+	                 result,                                              // Pass in the cursor to bind to.
+	                 new String[] { TaxonStore.COL_TITLE, TaxonStore.COL_PK},           // Array of cursor columns to bind to.
+	                 new int[] { R.id.textPrimary, R.id.icon });  // Parallel array of which template objects to bind to those columns.
 
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(TaxaListing.this, R.layout.image_list_item, result, columns, to);
-			adapter.setViewBinder(new ViewBinder() {
-				public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-					if (view.getId() == R.id.icon) {
-						
-						// Use UIL to handle caching/image binding
-						ImageView imageSpot = (ImageView) view;							
-						String uri = imgStore.getImage(cursor.getInt(columnIndex), "100");
-						ImageLoader.getInstance().displayImage(uri, imageSpot);		
-						
-						// return true to say we handled to binding
-						return true;
+	         ViewBinder viewBinder = new ViewBinder() {
+					public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+						if (view.getId() == R.id.icon) {
+							
+							// Use UIL to handle caching/image binding
+							ImageView imageSpot = (ImageView) view;							
+							String uri = imgStore.getImage(cursor.getInt(columnIndex), "100");
+							ImageLoader.getInstance().displayImage(uri, imageSpot);		
+							
+							// return true to say we handled to binding
+							return true;
+						}
+						return false;
 					}
-					return false;
-				}
-			});
-			listView.setAdapter(adapter);
+				};
+	         
+	         // Bind to our new adapter.
+			adapter.setViewBinder(viewBinder);
+	        setListAdapter((ListAdapter)adapter);
 			
 			_dlg.dismiss();
 		}
