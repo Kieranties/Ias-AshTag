@@ -124,7 +124,6 @@ public class AddPhoto extends InvadrActivityBase {
 	    	ImageView iv = (ImageView)findViewById(R.id.imageView);
 	    	String imagePath = "file://" + _package.getImagePath();
 	    	ImageLoader.getInstance().displayImage(imagePath, iv);
-	    	AshTagApp.makeToast("Tap image to change");
     	}
     }
 }
