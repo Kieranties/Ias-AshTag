@@ -2,13 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >        
     <item android:id="@+id/btnImageLocation"
           android:icon="@drawable/ic_menu_gallery"
-          android:showAsAction="always" />
+          android:showAsAction="always"
+          android:title="@string/acc_image_location" />
     
     <item android:id="@+id/btnMyLocation"
           android:icon="@drawable/ic_menu_mylocation"
-          android:showAsAction="always" />
+          android:showAsAction="always"
+          android:title="@string/acc_my_location" />
     
     <item android:id="@+id/btnSend"
           android:icon="@drawable/ic_menu_send"
-          android:showAsAction="always" />
+          android:showAsAction="always"
+          android:title="@string/acc_submit_sighting" />
 </menu>

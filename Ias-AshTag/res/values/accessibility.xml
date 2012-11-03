@@ -4,5 +4,8 @@
     <string name="acc_ashtag_logo">AshTag.org logo</string>
     <string name="acc_your_image">Your selected image</string>
     <string name="acc_id_image">Identification image</string>
+    <string name="acc_image_location">Set location from image</string>
+    <string name="acc_my_location">Set location from GPS</string>
+    <string name="acc_submit_sighting">Submit sighting</string>
     
 </resources>

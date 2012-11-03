@@ -5,10 +5,11 @@
     <string name="id_guide">Identification Guide</string>
     <string name="about">About</string>
     <string name="add_photo">Set Photo</string>
-    <string name="location">Set Location</string>
+    <string name="location">Set Location</string>    
     <string name="username_hint">email@example.com</string>
     <string name="source">Source: </string>
     <string name="powered_by">Powered by ias-ess.org</string>
+    <string name="contact">Contact AshTag.org</string>
     <string name="contact_email">problems@ashtag.org</string>
     <string name="contact_email_subject">Ashtag for Android…</string>
     <string-array name="camera_options">
