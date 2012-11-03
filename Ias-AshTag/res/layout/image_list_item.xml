@@ -12,25 +12,15 @@
         android:src="@drawable/launcher"
         android:contentDescription="@string/taxa_image" />
 
-    <ImageView
-        android:id="@+id/iconExpander"
-        android:layout_width="?android:attr/listPreferredItemHeight"
-        android:layout_height="?android:attr/listPreferredItemHeight"
-        android:layout_alignParentRight="true"
-        android:layout_toLeftOf="@id/icon"
-        android:padding="10dp"
-        android:src="@drawable/expander"
-        android:contentDescription="@string/taxa_selector" />
-
     <TextView
         android:id="@+id/textPrimary"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_toLeftOf="@id/iconExpander"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
         android:ellipsize="end"
         android:maxLines="2"
+        android:layout_marginRight="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />
 

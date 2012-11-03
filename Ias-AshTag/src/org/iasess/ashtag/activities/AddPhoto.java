@@ -32,6 +32,7 @@ public class AddPhoto extends InvadrActivityBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_photo);
 		getSupportActionBar().setTitle(R.string.add_photo);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		//check for data from state change
         if(savedInstanceState != null && savedInstanceState.containsKey(SubmitParcel.SUBMIT_PARCEL_EXTRA)){

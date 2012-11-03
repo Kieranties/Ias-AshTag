@@ -1,11 +1,12 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
-import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.data.ImageStore;
 import org.iasess.ashtag.data.TaxonStore;
+import org.iasess.ashtag.handlers.ActivityResultHandler;
+import org.iasess.ashtag.handlers.ClickHandler;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -22,6 +23,9 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -40,22 +44,20 @@ public class TaxaListing extends SherlockListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.taxa_listing);
 		getSupportActionBar().setTitle(R.string.select_taxa);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 				
 		new PopulateList().execute(""); // <- TODO: ugly!
 		
 		getListView().setOnItemClickListener(new GalleryViewListener());
 	}
-
-	/**
-     * Handler to pass control to the image selection process
-     * 
-     * @param v The {@link View} which fired the event handler
-     */
-    public void onAddPhotoClick(View v) {
-    	new ImageHandler(this).showChooser();
-    }
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       MenuInflater inflater = getSupportMenuInflater();
+       inflater.inflate(R.menu.image_only, menu);
+       return super.onCreateOptionsMenu(menu);
+    }  
     
 	/**
 	 * Clean up the resources of this Activity when destroyed
@@ -70,6 +72,25 @@ public class TaxaListing extends SherlockListActivity {
 		imgStore.close();
 	}
 		
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		new ActivityResultHandler(this).onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	    switch (item.getItemId()) {
+		    case android.R.id.home:
+		    	this.finish();
+	            return true;
+		    case R.id.btnAddSighting:
+		    	new ClickHandler(this).onAddSightingClick(item);
+		    	return true;
+	    }
+	
+		return super.onOptionsItemSelected(item);
+	}
 	
 	/**
 	 * Class to listen to ListView item selection events when
@@ -150,6 +171,7 @@ public class TaxaListing extends SherlockListActivity {
 		 * 
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
+		@SuppressWarnings("deprecation")
 		protected void onPostExecute(Cursor result) {
 			startManagingCursor(result);
 			SimpleCursorAdapter adapter = new SimpleCursorAdapter(

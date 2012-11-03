@@ -20,6 +20,8 @@
     <string name="taxa_selector">Taxa selector</string>
     <string name="source">Source: </string>
     <string name="powered_by">Powered by ias-ess.org</string>
+    <string name="contact_email">problems@ashtag.org</string>
+    <string name="contact_email_subject">Ashtag for Android...</string>
     <string-array name="camera_options">
         <item>Take Photo</item>
         <item>Choose Existing</item>

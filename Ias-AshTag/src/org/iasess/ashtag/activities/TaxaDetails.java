@@ -1,23 +1,27 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
-import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.data.ImageStore;
 import org.iasess.ashtag.data.TaxonStore;
+import org.iasess.ashtag.handlers.ActivityResultHandler;
+import org.iasess.ashtag.handlers.ClickHandler;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
@@ -40,11 +44,7 @@ public class TaxaDetails extends InvadrActivityBase {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.taxa_details);	
 		getSupportActionBar().setTitle(R.string.select_taxa);
-		
-    	if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(AshTagApp.getUsernamePreferenceString()).matches())){
-    		Button btn = (Button) findViewById(R.id.buttonSubmit);
-    		btn.setVisibility(View.GONE);
-    	}
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		long taxonId = getIntent().getExtras().getLong("taxonId");
 		
@@ -72,15 +72,14 @@ public class TaxaDetails extends InvadrActivityBase {
 		new PopulateImages().execute(taxonId);
 	}
 	
-	/**
-     * Handler to pass control to the image selection process
-     * 
-     * @param v The {@link View} which fired the event handler
-     */
-    public void onAddPhotoClick(View v) {
-    	new ImageHandler(this).showChooser();
-    }
 
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       MenuInflater inflater = getSupportMenuInflater();
+       inflater.inflate(R.menu.image_only, menu);
+       return super.onCreateOptionsMenu(menu);
+    }   
+    
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -88,6 +87,26 @@ public class TaxaDetails extends InvadrActivityBase {
 		imgStore.close();
 	}
 			
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		new ActivityResultHandler(this).onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	    switch (item.getItemId()) {
+		    case android.R.id.home:
+		    	this.finish();
+	            return true;
+		    case R.id.btnAddSighting:
+		    	new ClickHandler(this).onAddSightingClick(item);
+		    	return true;
+	    }
+	
+		return super.onOptionsItemSelected(item);
+	}
+	
 	private ImageView getImageView(){
 		return (ImageView) findViewById(R.id.imageView);
 	}

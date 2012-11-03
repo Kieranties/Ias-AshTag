@@ -1,10 +1,11 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
-import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.api.CampaignModel;
+import org.iasess.ashtag.handlers.ActivityResultHandler;
+import org.iasess.ashtag.handlers.ClickHandler;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -15,14 +16,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * Controls the 'Home' Activity view
@@ -65,32 +67,41 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
 			 }
 		});
 		
-		// Hook up the click listener for the campaign info
-		ImageView img = (ImageView) findViewById(R.id.info);
-		img.setOnClickListener(new OnClickListener() {
-		    public void onClick(View v) {
-		    	new CampaignUpdate().execute();
-		    }
-		});
-		
 		//Check to see if we've fetched the campaign details before
 		String site = CampaignModel.getInstance().getSite(); 
 		if(site == null || site.length() == 0) new CampaignUpdate(false).execute();
-		
-		
-		
-		
     }
     
-    	
-    /**
-     * Handler to pass control to the image selection process
-     * 
-     * @param v The {@link View} which fired the event handler
-     */
-    public void onAddPhotoClick(View v) {
-    	new ImageHandler(this).showChooser();
-    }    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       MenuInflater inflater = getSupportMenuInflater();
+       inflater.inflate(R.menu.home, menu);
+       return super.onCreateOptionsMenu(menu);
+    }   
+    
+    @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		new ActivityResultHandler(this).onActivityResult(requestCode, resultCode, data);
+	}
+    
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	    switch (item.getItemId()) {
+		    case android.R.id.home:
+		    	this.finish();
+	            return true;
+		    case R.id.btnAbout:
+		    	new CampaignUpdate().execute();
+		    	return true;
+		    case R.id.btnAddSighting:
+		    	new ClickHandler(this).onAddSightingClick(item);
+		    	return true;
+	    }
+	
+		return super.onOptionsItemSelected(item);
+	}
+        
     
     /**
      * Handler to populate and process an Intent to 
@@ -106,14 +117,8 @@ public class Home extends InvadrActivityBase implements OnEditorActionListener {
     
     private void CheckUsername(){
     	String text = _username.getText().toString().trim();
-    	Button btn = (Button) findViewById(R.id.buttonSubmit);
     	AshTagApp.setUsernamePreferenceString(text);
-    	if(android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()){    				
-    		btn.setEnabled(true);    		
-    		btn.setBackgroundColor(getResources().getColor(R.color.ias_main));
-    	} else {
-    		btn.setEnabled(false);
-    		btn.setBackgroundColor(getResources().getColor(R.color.ias_main_fade));
+    	if(!android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()){    				
     		AshTagApp.makeToast("Invalid email address");
     	}
     	_checkOnKeyboardHide = false;

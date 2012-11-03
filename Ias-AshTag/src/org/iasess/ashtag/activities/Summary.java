@@ -5,6 +5,7 @@ import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
 import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.api.SubmissionResponse;
+import org.iasess.ashtag.handlers.ActivityResultHandler;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -233,7 +234,7 @@ public class Summary extends MapActivity{
 	    		AshTagApp.makeToast("Submitted!");    		
 	    		 	            
 	    		if(_submitParcel.getIsExternal()){
-	    			setResult(InvadrActivityBase.CLOSE_ALL);
+	    			setResult(ActivityResultHandler.CLOSE_ALL);
 	    			finish();
 	    		} else {
 	    			//we're done for this submission so return the app to the start

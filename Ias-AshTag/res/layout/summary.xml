@@ -14,7 +14,7 @@
         android:height="35dp"
         android:text="@string/summary"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/white" />    
+        android:textColor="@android:color/white" />    
     <Button
         android:id="@+id/buttonDone"
         android:layout_width="fill_parent"
@@ -27,7 +27,7 @@
         android:onClick="onDoneClick"
         android:text="@string/done"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/white" />
+        android:textColor="@android:color/white" />
     
     <com.google.android.maps.MapView
         android:id="@+id/mapView"
