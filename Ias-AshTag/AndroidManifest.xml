@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".activities.AddPhoto">
+        <activity android:name=".activities.AddPhoto" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

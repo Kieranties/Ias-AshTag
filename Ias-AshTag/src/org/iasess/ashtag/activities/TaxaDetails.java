@@ -43,7 +43,7 @@ public class TaxaDetails extends InvadrActivityBase {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.taxa_details);	
-		getSupportActionBar().setTitle(R.string.select_taxa);
+		getSupportActionBar().setTitle(R.string.id_guide);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		long taxonId = getIntent().getExtras().getLong("taxonId");

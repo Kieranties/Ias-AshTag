@@ -44,7 +44,7 @@ public class TaxaListing extends SherlockListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setTitle(R.string.select_taxa);
+		getSupportActionBar().setTitle(R.string.id_guide);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 				
 		new PopulateList().execute(""); // <- TODO: ugly!

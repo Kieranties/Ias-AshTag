@@ -10,7 +10,7 @@
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:layout_marginRight="6dp"
         android:src="@drawable/launcher"
-        android:contentDescription="@string/taxa_image" />
+        android:contentDescription="@string/acc_id_image" />
 
     <TextView
         android:id="@+id/textPrimary"

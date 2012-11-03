@@ -2,7 +2,6 @@ package org.iasess.ashtag.activities;
 
 import java.net.URI;
 
-import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;

@@ -7,4 +7,4 @@
     android:adjustViewBounds="true"
     android:scaleType="fitCenter"
     android:layout_gravity="center"
-    android:contentDescription="@string/your_selected_image"/>       
+    android:contentDescription="@string/acc_your_image"/>       

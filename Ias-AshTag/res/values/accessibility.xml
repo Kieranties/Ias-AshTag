@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="acc_ias_logo">Iasess.org logo</string>
+    <string name="acc_ashtag_logo">AshTag.org logo</string>
+    <string name="acc_your_image">Your selected image</string>
+    <string name="acc_id_image">Identification image</string>
+    
+</resources>

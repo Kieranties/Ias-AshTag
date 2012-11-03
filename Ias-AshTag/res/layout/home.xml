@@ -10,7 +10,7 @@
         android:id="@+id/imageBanner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"        
-        android:contentDescription="@string/app_title"
+        android:contentDescription="@string/acc_ashtag_logo"
         android:src="@drawable/banner" />
     
     <TextView 
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:background="@color/ias_main"
         android:onClick="onViewGalleryClick"
-        android:text="@string/view_gallery"
+        android:text="@string/id_guide"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white"
         android:layout_below="@+id/editUsername" />
