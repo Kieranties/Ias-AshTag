@@ -92,6 +92,10 @@ public class SetLocation extends SherlockMapActivity{
 		    case R.id.btnSend:
 		    	//new SubmitSightingTask().execute("");
 		    	return true;
+		    case R.id.btnImageLocation:
+		    	return true;
+		    case R.id.btnMyLocation:
+		    	return true;
 	    }
 	
 		return super.onOptionsItemSelected(item);
