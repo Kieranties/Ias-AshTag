@@ -18,6 +18,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockMapActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapController;
@@ -65,7 +67,7 @@ public class SetLocation extends SherlockMapActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.summary);
+        setContentView(R.layout.set_location);
         getSupportActionBar().setTitle(R.string.location);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -74,6 +76,13 @@ public class SetLocation extends SherlockMapActivity{
         initMapComponents();    
     }
        
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       MenuInflater inflater = getSupportMenuInflater();
+       inflater.inflate(R.menu.set_location, menu);
+       return super.onCreateOptionsMenu(menu);
+    }  
+    
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
 	    switch (item.getItemId()) {
