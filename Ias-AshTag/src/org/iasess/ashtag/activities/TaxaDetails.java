@@ -127,7 +127,7 @@ public class TaxaDetails extends InvadrActivityBase {
 		 */
 		protected void onPreExecute() {
 			// display the dialog to the user
-			_dlg = ProgressDialog.show(TaxaDetails.this, "", "Fetching images...", true,true, new OnCancelListener() {
+			_dlg = ProgressDialog.show(TaxaDetails.this, "", getResources().getString(R.string.get_image), true,true, new OnCancelListener() {
 				public void onCancel(DialogInterface dialog) {
 					PopulateImages.this.cancel(true);	
 					finish();
@@ -150,8 +150,9 @@ public class TaxaDetails extends InvadrActivityBase {
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
 		protected void onPostExecute(String result) {		
+			final String failText = getResources().getString(R.string.get_image_fail);
 			if(result == null){
-				AshTagApp.makeToast("No images found...");
+				AshTagApp.makeToast(failText);
 				_dlg.dismiss();
 			} else {
 				image = result;
@@ -160,7 +161,7 @@ public class TaxaDetails extends InvadrActivityBase {
 				
 					
 					public void onLoadingFailed(FailReason failReason) {
-						AshTagApp.makeToast("No images found...");
+						AshTagApp.makeToast(failText);
 						_dlg.dismiss();
 					}
 

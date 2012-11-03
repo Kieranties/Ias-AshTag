@@ -169,7 +169,7 @@ public class SetLocation extends SherlockMapActivity{
 		//check gps is enabled
 		_locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 		if (!_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-			AshTagApp.makeToast(this, "Please enable GPS");
+			AshTagApp.makeToast(this, getResources().getString(R.string.enable_gps));
 			Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 			startActivityForResult(gpsIntent, GPS_INTENT);
 		} else{
@@ -185,7 +185,7 @@ public class SetLocation extends SherlockMapActivity{
 		if(!_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) return;
 		
 		//inform user we are waiting for a fix
-		final ProgressDialog dialog = ProgressDialog.show(this, "", "Finding location...", true);
+		final ProgressDialog dialog = ProgressDialog.show(this, "", getResources().getString(R.string.getting_location), true);
 		
 		//prepare the default overlay to fetch current location	
 		_locationOverlay.enableMyLocation();
@@ -223,7 +223,7 @@ public class SetLocation extends SherlockMapActivity{
 		 */
 		protected void onPreExecute() {
 			//display the dialog to the user
-			_dlg = ProgressDialog.show(SetLocation.this, "", "Submitting...", true,true, new OnCancelListener() {
+			_dlg = ProgressDialog.show(SetLocation.this, "", getResources().getString(R.string.submitting), true,true, new OnCancelListener() {
 				public void onCancel(DialogInterface dialog) {
 					SubmitSightingTask.this.cancel(true);	
 					finish();
@@ -251,7 +251,7 @@ public class SetLocation extends SherlockMapActivity{
 	    protected void onPostExecute(SubmissionResponse result) {	    	
 	    	_dlg.dismiss();
 	    	if(result.getId() != Integer.MIN_VALUE){
-	    		AshTagApp.makeToast("Submitted!");    		
+	    		AshTagApp.makeToast(getResources().getString(R.string.submitted));    		
 	    		 	            
 	    		if(_submitParcel.getIsExternal()){
 	    			setResult(ActivityResultHandler.CLOSE_ALL);
@@ -265,7 +265,7 @@ public class SetLocation extends SherlockMapActivity{
 	    	}  
 	    	else
 	    	{
-	    		AshTagApp.makeToast("Sorry, please try again later :-(");
+	    		AshTagApp.makeToast(getResources().getString(R.string.submitting_fail));
 	    	}
 	    }
 	}

@@ -132,7 +132,7 @@ public class TaxaListing extends SherlockListActivity {
 		 */
 		protected void onPreExecute() {
 			// display the dialog to the user
-			_dlg = ProgressDialog.show(TaxaListing.this, "", "Fetching details...", true,true, new OnCancelListener() {
+			_dlg = ProgressDialog.show(TaxaListing.this, "", getResources().getString(R.string.get_details), true,true, new OnCancelListener() {
 				public void onCancel(DialogInterface dialog) {
 					PopulateList.this.cancel(true);	
 					finish();

@@ -53,7 +53,7 @@ public class About extends InvadrActivityBase {
 		        emailIntent.setType("plain/text");
 		        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{getResources().getString(R.string.contact_email)});
 		        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.contact_email_subject));
-		        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+		        startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.contact)));
 		    	return true;
 		    case R.id.btnAddSighting:
 		    	new ClickHandler(this).onAddSightingClick(item);

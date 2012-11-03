@@ -25,14 +25,25 @@
         android:paddingBottom="15dp"
         android:paddingTop="5dp" />
 
-    <EditText
+    <TextView
+        android:id="@+id/emailAddress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appCaption"
+        android:gravity="center_horizontal"
+        android:text="@string/username_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <TextView
         android:id="@+id/editUsername"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username_hint"
-        android:layout_below="@+id/appCaption"
+        android:layout_below="@+id/emailAddress"
         android:gravity="center_horizontal"
-        android:inputType="textEmailAddress" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:clickable="true"
+        android:onClick="onUsernameClick" />
     
     <Button
         android:id="@+id/buttonGallery"
@@ -41,6 +52,7 @@
         android:background="@color/ias_main"
         android:onClick="onViewGalleryClick"
         android:text="@string/id_guide"
+        android:layout_marginTop="15dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white"
         android:layout_below="@+id/editUsername" />

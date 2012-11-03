@@ -6,12 +6,25 @@
     <string name="about">About</string>
     <string name="add_photo">Set Photo</string>
     <string name="location">Set Location</string>    
+    <string name="username_title">Email address</string>
     <string name="username_hint">email@example.com</string>
+    <string name="username_dialog_title">Email required</string>
+    <string name="username_dialog_message">Please enter an email address</string>
+    <string name="username_invalid">Invalid email address</string>
     <string name="source">Source: </string>
     <string name="powered_by">Powered by ias-ess.org</string>
     <string name="contact">Contact AshTag.org</string>
     <string name="contact_email">problems@ashtag.org</string>
     <string name="contact_email_subject">Ashtag for Android…</string>
+    <string name="get_details">Getting details…</string>
+    <string name="get_details_fail">Could not get campaign details</string>
+    <string name="enable_gps">Please enable GPS</string>
+    <string name="getting_location">Finding location…</string>
+    <string name="submitting">Submitting…</string>
+    <string name="submitting_fail">Sorry, please try again later</string>
+    <string name="submitted">Submitted</string>
+    <string name="get_image">Getting image…</string>
+    <string name="get_image_fail">No images found…</string>
     <string-array name="camera_options">
         <item>Take Photo</item>
         <item>Choose Existing</item>
