@@ -16,7 +16,7 @@
 
     <application
         android:icon="@drawable/launcher"
-        android:logo="@drawable/icon"
+        android:logo="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/Theme.ashtag" 
         android:name=".AshTagApp">
