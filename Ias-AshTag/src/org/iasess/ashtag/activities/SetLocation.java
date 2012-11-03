@@ -16,10 +16,10 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 
+import com.actionbarsherlock.app.SherlockMapActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
@@ -27,7 +27,7 @@ import com.google.android.maps.MyLocationOverlay;
 /**
  * Controls the 'Summary' Activity view
  */
-public class Summary extends MapActivity{
+public class SetLocation extends SherlockMapActivity{
     
 	/**
 	 * Request Code for the GPS intent
@@ -66,11 +66,27 @@ public class Summary extends MapActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.summary);
+        getSupportActionBar().setTitle(R.string.location);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
         _submitParcel = getIntent().getParcelableExtra(SubmitParcel.SUBMIT_PARCEL_EXTRA);
         		
         initMapComponents();    
     }
        
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	    switch (item.getItemId()) {
+		    case android.R.id.home:
+		    	this.finish();
+	            return true;
+		    case R.id.btnSend:
+		    	//new SubmitSightingTask().execute("");
+		    	return true;
+	    }
+	
+		return super.onOptionsItemSelected(item);
+	}
 	/**
 	 * Required override when using MapView
 	 * 
@@ -126,16 +142,7 @@ public class Summary extends MapActivity{
 	    AshTagApp.unbindDrawables(findViewById(R.id.rootView));
 	    System.gc();
 	}
-	
-    /**
-     * Executes an {@link AsyncTask} to submit a sighting
-     * 
-     * @param v The {@link View} which fired the event handler
-     */
-    public void onDoneClick(View v){
-    	new SubmitSightingTask().execute("");
-    }
-    
+	    
 	/**
 	 * Initialises the map components of this Activity
 	 */
@@ -203,7 +210,7 @@ public class Summary extends MapActivity{
 		 */
 		protected void onPreExecute() {
 			//display the dialog to the user
-			_dlg = ProgressDialog.show(Summary.this, "", "Submitting...", true,true, new OnCancelListener() {
+			_dlg = ProgressDialog.show(SetLocation.this, "", "Submitting...", true,true, new OnCancelListener() {
 				public void onCancel(DialogInterface dialog) {
 					SubmitSightingTask.this.cancel(true);	
 					finish();
@@ -238,7 +245,7 @@ public class Summary extends MapActivity{
 	    			finish();
 	    		} else {
 	    			//we're done for this submission so return the app to the start
-		    		Intent home = new Intent(Summary.this, Home.class);
+		    		Intent home = new Intent(SetLocation.this, Home.class);
 		            home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //resets the activity stack
 		            startActivity(home);
 	    		}	    		 

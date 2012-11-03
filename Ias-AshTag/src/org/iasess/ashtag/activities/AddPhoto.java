@@ -6,14 +6,12 @@ import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
-import org.iasess.ashtag.handlers.ActivityResultHandler;
 import org.iasess.ashtag.handlers.ClickHandler;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.actionbarsherlock.view.Menu;
@@ -91,7 +89,7 @@ public class AddPhoto extends InvadrActivityBase {
 		    	this.finish();
 	            return true;
 		    case R.id.btnAddLocation:
-		    	Intent intent = new Intent(this, Summary.class);
+		    	Intent intent = new Intent(this, SetLocation.class);
 		    	intent.putExtra(SubmitParcel.SUBMIT_PARCEL_EXTRA, _package);
 		    	startActivityForResult(intent, 0);
 		    	return true;
