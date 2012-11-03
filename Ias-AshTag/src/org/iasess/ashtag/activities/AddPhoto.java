@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -75,6 +77,13 @@ public class AddPhoto extends InvadrActivityBase {
 		outState.putParcelable(SubmitParcel.SUBMIT_PARCEL_EXTRA, _package);
 	}
 		
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       MenuInflater inflater = getSupportMenuInflater();
+       inflater.inflate(R.menu.add_photo, menu);
+       return super.onCreateOptionsMenu(menu);
+    }
+	
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 	    switch (item.getItemId()) {
