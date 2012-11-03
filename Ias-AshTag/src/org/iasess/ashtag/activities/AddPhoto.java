@@ -6,6 +6,8 @@ import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
+import org.iasess.ashtag.handlers.ActivityResultHandler;
+import org.iasess.ashtag.handlers.ClickHandler;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -72,43 +75,36 @@ public class AddPhoto extends InvadrActivityBase {
 		outState.putParcelable(SubmitParcel.SUBMIT_PARCEL_EXTRA, _package);
 	}
 		
-    /**
-     * Handler to populate and execute an Intent
-     * to pass control to the next stage of the application
-     * 
-     * @param v The {@link View} which fired the event handler
-     */
-    public void onNextClick(View v){
-    	Intent intent = new Intent(this, Summary.class);
-    	intent.putExtra(SubmitParcel.SUBMIT_PARCEL_EXTRA, _package);
-    	startActivityForResult(intent, 0);
-    }
-    
-    /**
-     * Handler to pass control to the image selection process
-     * 
-     * @param v The {@link View} which fired the event handler
-     */
-    public void onImageClick(View v){
-    	new ImageHandler(this).showChooser();
-    }
-     
-    /**
-     * Handles the response from an ActivityResult fired in the context
-     * of this Activity
-     * 
-     * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-     */
-    @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		//super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == Activity.RESULT_OK){
-			//we're expecting the intent to have been an image type initiated by this app
-			String path = ImageHandler.getImagePathFromIntentResult(resultCode, requestCode, data);
-			_package.setImagePath(path);
-			setImageView();
-		}			
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	    switch (item.getItemId()) {
+		    case android.R.id.home:
+		    	this.finish();
+	            return true;
+		    case R.id.btnAddLocation:
+		    	Intent intent = new Intent(this, Summary.class);
+		    	intent.putExtra(SubmitParcel.SUBMIT_PARCEL_EXTRA, _package);
+		    	startActivityForResult(intent, 0);
+		    	return true;
+		    case R.id.btnAddSighting:
+		    	new ClickHandler(this).onAddSightingClick(item);
+		    	return true;
+	    }
+	
+		return super.onOptionsItemSelected(item);
 	}
+	
+	 @Override
+		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+			//super.onActivityResult(requestCode, resultCode, data);
+			if(resultCode == Activity.RESULT_OK){
+				//we're expecting the intent to have been an image type initiated by this app
+				String path = ImageHandler.getImagePathFromIntentResult(resultCode, requestCode, data);
+				_package.setImagePath(path);
+				setImageView();
+			}			
+		}
+   
    
     /**
      * Populates the {@link ImageView} in this activity with the image
