@@ -51,6 +51,7 @@ public class SetLocation extends SherlockMapActivity {
 	private MapController _mapController;
 	private MyLocationOverlay _locationOverlay;
 	private LocationManager _locationManager;
+	private SightingOverlay _sightingOverlay;
 	private MapView _mapView;
 
 	@Override
@@ -64,24 +65,24 @@ public class SetLocation extends SherlockMapActivity {
 
 		_mapView = (MapView) findViewById(R.id.mapView);
 		_mapView.setSatellite(true);
-		_mapView.displayZoomControls(true);
+		_mapView.setBuiltInZoomControls(true);
+		
 		_mapController = _mapView.getController();
 		
 		_locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
 		Drawable marker = getResources().getDrawable(R.drawable.marker);
-
-		marker.setBounds(0, 0, marker.getIntrinsicWidth(),
-				marker.getIntrinsicHeight());
-		SightingOverlay sightingOverlay = new SightingOverlay(marker);
-		_mapView.getOverlays().add(sightingOverlay);
+		marker.setBounds(0, 0, marker.getIntrinsicWidth(),marker.getIntrinsicHeight());
+		
+		_sightingOverlay = new SightingOverlay(marker);
+		_mapView.getOverlays().add(_sightingOverlay);
 
 		Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		String provider = _locationManager.getBestProvider(criteria, true);
 
 		Location loc = _locationManager.getLastKnownLocation(provider);
-		sightingOverlay.setMarker(loc);
+		_sightingOverlay.setMarker(loc);
 	}
 
 	@Override
@@ -98,7 +99,9 @@ public class SetLocation extends SherlockMapActivity {
 			this.finish();
 			return true;
 		case R.id.btnSend:
-			// new SubmitSightingTask().execute("");
+			GeoPoint point = _sightingOverlay.getMarkerLocation();
+			if(point != null) {}//new SubmitSightingTask().execute(point);
+			else AshTagApp.makeToast("Please set a location");
 			return true;
 		case R.id.btnImageLocation:
 			return true;
@@ -157,7 +160,7 @@ public class SetLocation extends SherlockMapActivity {
 	 * 
 	 */
 	private class SubmitSightingTask extends
-			AsyncTask<String, Void, SubmissionResponse> {
+			AsyncTask<GeoPoint, Void, SubmissionResponse> {
 
 		/**
 		 * The progress dialog to display while processing
@@ -183,16 +186,12 @@ public class SetLocation extends SherlockMapActivity {
 					});
 		}
 
-		/**
-		 * Submits the details of a sighting through the API
-		 * 
-		 * @see android.os.AsyncTask#doInBackground(Params[])
-		 */
 		@Override
-		protected SubmissionResponse doInBackground(String... params) {
+		protected SubmissionResponse doInBackground(GeoPoint... params) {
 			// don't need params
-			Location fix = _locationOverlay.getLastFix();
-			_submitParcel.setLocation(fix.getLatitude(), fix.getLongitude());
+			double latitude = params[0].getLatitudeE6() / 1E6;
+			double longitude = params[0].getLongitudeE6() / 1E6;
+			_submitParcel.setLocation(latitude, longitude);
 			return ApiHandler.submitSighting(_submitParcel);
 		}
 
@@ -239,8 +238,7 @@ public class SetLocation extends SherlockMapActivity {
 
 		public SightingOverlay(Drawable marker) {
 			super(boundCenterBottom(marker));
-			this.marker = boundCenterBottom(marker);
-
+			this.marker = marker;
 			dragImage = (ImageView) findViewById(R.id.drag);
 			xDragImageOffset = dragImage.getDrawable().getIntrinsicWidth() / 2;
 			yDragImageOffset = dragImage.getDrawable().getIntrinsicHeight();
@@ -323,7 +321,15 @@ public class SetLocation extends SherlockMapActivity {
 			items.add(item);
 			populate();
 			_mapController.animateTo(point);
+			_mapController.setZoom(18);
 			AshTagApp.makeToast("Drag to refine position");
+
+		}
+		
+		public GeoPoint getMarkerLocation() {
+			if(items.size() < 1) return null;
+			
+			return items.get(0).getPoint();
 
 		}
 
