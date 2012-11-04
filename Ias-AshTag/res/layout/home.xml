@@ -43,17 +43,17 @@
         android:gravity="center_horizontal"
         android:hint="@string/username_hint"
         android:onClick="onUsernameClick"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium" 
+        android:layout_marginBottom="15dp"/>
 
     <GridView
         android:id="@+id/gridview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/editUsername"
         android:gravity="bottom"
         android:horizontalSpacing="1dp"
-        android:numColumns="3"
+        android:numColumns="3"        
         android:stretchMode="columnWidth"
         android:verticalSpacing="1dp" >
     </GridView>
