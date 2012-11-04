@@ -7,6 +7,7 @@ import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -31,7 +32,7 @@ public class SubmitParcel implements Parcelable {
     }
 	
 	public void setImagePath(String imgPath) {
-		_imgPath = imgPath;
+		_imgPath = imgPath.toString();
 	}
 
 	public void setLocation(double latitude, double longitude) {

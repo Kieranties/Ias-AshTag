@@ -9,6 +9,8 @@ import org.iasess.ashtag.handlers.ClickHandler;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -16,7 +18,9 @@ import android.widget.ImageView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 
 /**
  * Controls the 'AddPhoto' Activity view
@@ -51,7 +55,7 @@ public class AddPhoto extends InvadrActivityBase {
         	Bundle extras = getIntent().getExtras();
         	if(extras != null && extras.containsKey(Intent.EXTRA_STREAM)){
         		Uri uri = extras.getParcelable(Intent.EXTRA_STREAM);
-        		_package = new SubmitParcel(ImageHandler.getPath(uri));
+        		_package = new SubmitParcel(ImageHandler.getRealPathFromURI(uri));
         		//need to set a flag to track that we have come in from external source
         		_package.setIsExternal(true);
         	}
@@ -121,8 +125,28 @@ public class AddPhoto extends InvadrActivityBase {
     private void setImageView(){
     	if(_package != null){
 	    	ImageView iv = (ImageView)findViewById(R.id.imageView);
-	    	String imagePath = "file://" + _package.getImagePath();
-	    	ImageLoader.getInstance().displayImage(imagePath, iv);
+	    	String imagePath = _package.getImagePath();
+	    	DisplayImageOptions displayOptions = new DisplayImageOptions.Builder()
+			.cacheInMemory()
+			.displayer(new BitmapDisplayer() {
+				
+				@Override
+				public Bitmap display(Bitmap bm, ImageView view) {
+					int rotation = ImageHandler.getImageRotation(_package.getImagePath());
+					if (rotation != 0) {
+						// rotate if required
+						Matrix mtx = new Matrix();
+						mtx.postRotate(rotation);
+						bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
+								bm.getHeight(), mtx, true);
+					}
+					view.setImageBitmap(bm);
+					return bm;
+				}
+			})
+			.cacheOnDisc()
+			.build();
+	    	ImageLoader.getInstance().displayImage("file://" + imagePath, iv, displayOptions);
     	}
     }
 }

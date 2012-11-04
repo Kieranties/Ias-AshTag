@@ -1,11 +1,12 @@
 package org.iasess.ashtag;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,9 +15,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Images.ImageColumns;
-import android.provider.MediaStore.MediaColumns;
+import android.support.v4.content.CursorLoader;
 
 /**
  * Singleton class to manage all image interactions with the device camera or
@@ -51,27 +52,30 @@ public final class ImageHandler {
 	/**
 	 * Returns the URI selected by the user in an image selection intent
 	 * 
-	 * @param resultCode The result of the Intent
-	 * @param requestCode The identity of the Intent
-	 * @param data The actual data of the Intent
+	 * @param resultCode
+	 *            The result of the Intent
+	 * @param requestCode
+	 *            The identity of the Intent
+	 * @param data
+	 *            The actual data of the Intent
 	 * @return The path of the selected image
 	 */
-	public static String getImagePathFromIntentResult(int resultCode, int requestCode, Intent data) {
+	public static String getImagePathFromIntentResult(int resultCode,
+			int requestCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 
 			Uri selectedUri = null;
 			switch (requestCode) {
-				case ImageHandler.GALLERY_OPTION:
-					selectedUri = data.getData();
-					break;
-				case ImageHandler.CAMERA_OPTION:
-					selectedUri = lastCreatedImageUri;
-					break;
-			}
-
-			if (selectedUri != null) {
-				return getPath(selectedUri);
-			}
+			case ImageHandler.GALLERY_OPTION:
+				return getRealPathFromURI(data.getData());
+			case ImageHandler.CAMERA_OPTION:
+				selectedUri = lastCreatedImageUri;
+				Intent mediaScanIntent = new Intent(
+						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+				mediaScanIntent.setData(selectedUri);
+				AshTagApp.getContext().sendBroadcast(mediaScanIntent);
+				return selectedUri.toString();
+			}			
 		}
 		return null;
 	}
@@ -129,18 +133,16 @@ public final class ImageHandler {
 	 *            The URI to find the physical path for
 	 * @return The physical path to the URI
 	 */
-	public static String getPath(Uri uri) {
-		String[] projection = { MediaColumns.DATA };
-		ContentResolver resolver = AshTagApp.getContext().getContentResolver();
-		Cursor cursor = resolver.query(uri, projection, null, null, null);
-		int column_index = cursor
-				.getColumnIndexOrThrow(MediaColumns.DATA);
-		cursor.moveToFirst();
-		String path = cursor.getString(column_index);
-		cursor.close();
-		return path;
+	
+	public static String getRealPathFromURI(Uri contentUri) {
+	    String[] proj = { MediaStore.Images.Media.DATA };
+	    CursorLoader loader = new CursorLoader(AshTagApp.getContext(), contentUri, proj, null, null, null);
+	    Cursor cursor = loader.loadInBackground();
+	    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+	    cursor.moveToFirst();
+	    return cursor.getString(column_index);
 	}
-
+	
 	public static float[] getImageLocation(String imgPath) {
 		float[] latLong = new float[2];
 		try {
@@ -160,10 +162,11 @@ public final class ImageHandler {
 	 * Returns the number of degrees an image should be rotated to provide its
 	 * correct orientation
 	 * 
-	 * @param imgPath The path of the image
+	 * @param imgPath
+	 *            The path of the image
 	 * @return The number if degrees to rotate the image
 	 */
-	private static int getImageRotation(String imgPath) {
+	public static int getImageRotation(String imgPath) {
 		try {
 			// check orientation
 			ExifInterface exif = getExifData(imgPath);
@@ -213,7 +216,12 @@ public final class ImageHandler {
 			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				if (item == 0)
-					cameraIntent();
+					try {
+						cameraIntent();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				else
 					galleryIntent();
 			}
@@ -221,22 +229,35 @@ public final class ImageHandler {
 		builder.create().show();
 	}
 
+	private File createImageFile() throws IOException {
+		
+		File storageDir = new File(
+				Environment
+						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+				"AshTag");
+		storageDir.mkdirs();
+
+		// Create an image file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+				.format(new Date());
+		String imageFileName = "ias-" + timeStamp;
+		File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+		return image;
+	}
+
 	/**
 	 * Creates and executes and Intent to process an image selection based on a
 	 * newly created image in the devices camera application
+	 * 
+	 * @throws IOException
 	 */
-	private void cameraIntent() {
-		String fileName = "ias-" + System.currentTimeMillis() + ".jpg";
-		ContentValues values = new ContentValues();
-		values.put(MediaColumns.TITLE, fileName);
-		values.put(ImageColumns.DESCRIPTION, "Taken for invadr");
-		lastCreatedImageUri = _activity.getContentResolver().insert(
-				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+	private void cameraIntent() throws IOException {
 
-		// create intent with extra output to grab uri later
+		File f = createImageFile();
+		lastCreatedImageUri = Uri.fromFile(f);
+
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, lastCreatedImageUri);
-
 		_activity.startActivityForResult(
 				Intent.createChooser(intent, "Select Picture"), CAMERA_OPTION);
 	}
