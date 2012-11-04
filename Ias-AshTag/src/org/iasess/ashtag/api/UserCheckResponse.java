@@ -14,22 +14,27 @@ public class UserCheckResponse {
 	private String _answer;
 
 	/**
-	 * The username returned from the server
-	 * when matching email addresses
+	 * The username returned from the server when matching email addresses
 	 */
 	@SerializedName("username")
 	private String _username;
-	
+
 	/**
 	 * Gets the answer the server provided
+	 * 
 	 * @return
 	 */
-	public String getAnswer(){ return _answer; }
-	
+	public String getAnswer() {
+		return _answer;
+	}
+
 	/**
 	 * Gets the username the server provided
+	 * 
 	 * @return
 	 */
-	public String getUsername(){ return _username; }
-	
+	public String getUsername() {
+		return _username;
+	}
+
 }

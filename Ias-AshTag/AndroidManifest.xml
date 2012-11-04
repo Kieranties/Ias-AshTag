@@ -5,49 +5,72 @@
     android:versionCode="3"
     android:versionName="1.0.2" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16" />   
-        
-    <uses-feature android:name="android.hardware.camera"/>
-      
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="16" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".AshTagApp"
         android:icon="@drawable/launcher"
-        android:logo="@drawable/logo"
         android:label="@string/app_name"
-        android:theme="@style/Theme.ashtag" 
-        android:name=".AshTagApp">
-        <uses-library android:required="true" android:name="com.google.android.maps"></uses-library>
+        android:logo="@drawable/logo"
+        android:theme="@style/Theme.ashtag" >
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" >
+        </uses-library>
+
         <activity
             android:name=".activities.Home"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity 
-            android:name=".activities.AddPhoto" 
+        <activity
+            android:name=".activities.AddPhoto"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*"/>
+
+                <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.DetailsPager" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"/>
-        <activity android:name=".activities.TaxaListing" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"/>
-        <activity android:name=".activities.Settings" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"/>
-        <activity android:name=".activities.SetLocation" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden" />
-        <activity android:name=".activities.About" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name=".activities.DetailsPager"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.TaxaListing"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.Settings"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SetLocation"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.About"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
