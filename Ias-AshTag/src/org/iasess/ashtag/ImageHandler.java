@@ -132,7 +132,7 @@ public final class ImageHandler {
 					Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 					mediaScanIntent.setData(selectedUri);
 					AshTagApp.getContext().sendBroadcast(mediaScanIntent);
-					return selectedUri.toString();
+					return selectedUri.getPath();
 			}
 		}
 		return null;
