@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -24,23 +25,27 @@ public class ClickHandler {
 	}
 	
 	public void onAddSightingClick(MenuItem mi) {
-    	if(EmailHandler.isValid()){
-        	new ImageHandler(_activity).showChooser();
-    	} else {
-    		if(GetValidEmail()){
-    			new ImageHandler(_activity).showChooser();
-    		}
+    	if(!showImageHandler()){
+    		onUsernameClick(new OnDismissListener() {				
+				@Override
+				public void onDismiss(DialogInterface dialog) {
+					showImageHandler();
+				}
+			});
     	}
     } 
 	
-	public boolean onUsernameClick(){
-		return GetValidEmail();
+	private boolean showImageHandler(){
+		if(EmailHandler.isValid()){
+			new ImageHandler(_activity).showChooser();	
+			return true;
+		}
+		
+		return false;
 	}
 	
-	
-	private boolean GetValidEmail(){
-		new EmailInputDialog(_activity).show();
-		return EmailHandler.isValid();
+	public void onUsernameClick(OnDismissListener dismissListener){
+		new EmailInputDialog(_activity, dismissListener).show();
 	}
 	
 	private class EmailInputDialog extends AlertDialog{		
@@ -48,12 +53,13 @@ public class ClickHandler {
 		private EditText _input;
 		private String _toastText;
 		
-		protected EmailInputDialog(Context context) {
+		protected EmailInputDialog(Context context, OnDismissListener dismissListener) {
 			super(context);
 			
 			_input = new EditText(context);
 			_input.setTextColor(context.getResources().getColor(android.R.color.black));
 			_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+			_input.setText(AshTagApp.getUsernamePreferenceString());
 			
 			setTitle(context.getResources().getString(R.string.username_dialog_title));
 			setMessage(context.getResources().getString(R.string.username_dialog_message));
@@ -66,6 +72,7 @@ public class ClickHandler {
 	            }
 	        };
 	        
+	        setOnDismissListener(dismissListener);
 	        setButton(DialogInterface.BUTTON_POSITIVE, context.getResources().getString(android.R.string.ok), stubListener);	        
 	        setButton(DialogInterface.BUTTON_NEGATIVE, context.getResources().getString(android.R.string.cancel), stubListener);
 	        _toastText = context.getResources().getString(R.string.username_invalid);

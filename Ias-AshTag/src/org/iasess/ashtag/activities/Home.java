@@ -8,10 +8,12 @@ import org.iasess.ashtag.data.ImageStore;
 import org.iasess.ashtag.data.TaxonStore;
 import org.iasess.ashtag.handlers.ActivityResultHandler;
 import org.iasess.ashtag.handlers.ClickHandler;
+import org.iasess.ashtag.handlers.EmailHandler;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -50,7 +52,7 @@ public class Home extends InvadrActivityBase {
         
         new PopulateGrid().execute(""); // <- TODO: ugly!
         
-        setUsernameText(findViewById(R.id.editUsername)); 
+        setUsernameText(); 
         
 		//Check to see if we've fetched the campaign details before
 		String site = CampaignModel.getInstance().getSite(); 
@@ -87,6 +89,13 @@ public class Home extends InvadrActivityBase {
 		return super.onOptionsItemSelected(item);
 	}
          
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+    	super.onWindowFocusChanged(hasFocus);
+    	setUsernameText();
+    }
+    
     @Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -108,12 +117,17 @@ public class Home extends InvadrActivityBase {
     }
     
     public void onUsernameClick(View v){
-    	boolean isValid = new ClickHandler(this).onUsernameClick();
-    	if(isValid) setUsernameText(v);
+    	new ClickHandler(this).onUsernameClick(new OnDismissListener() {			
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				if(EmailHandler.isValid()) setUsernameText();				
+			}
+		});
+    	
     }
 
-    private void setUsernameText(View v){
-    	((TextView)v).setText(AshTagApp.getUsernamePreferenceString());
+    private void setUsernameText(){
+    	((TextView)findViewById(R.id.editUsername)).setText(AshTagApp.getUsernamePreferenceString());
     }
     /**
 	 * Class to process the checking of a username in a separate thread
