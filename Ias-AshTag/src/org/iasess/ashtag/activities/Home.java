@@ -103,19 +103,7 @@ public class Home extends InvadrActivityBase {
 		taxonStore.close();
 		imgStore.close();
 	}
-    
-    /**
-     * Handler to populate and process an Intent to 
-     * pass control to the gallery view of the application
-     * 
-     * @param v The {@link View} which fired the event handler
-     */
-    public void onViewGalleryClick(View v) {
-    	Intent intent = new Intent(this, TaxaListing.class);
-    	intent.putExtra("gallery", true);
-    	startActivity(intent);
-    }
-    
+        
     public void onUsernameClick(View v){
     	new ClickHandler(this).onUsernameClick(new OnDismissListener() {			
 			@Override
@@ -292,7 +280,9 @@ public class Home extends InvadrActivityBase {
 			gridView.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					//startImageGalleryActivity(position);
+					Intent intent = new Intent(Home.this, DetailsPager.class);
+			    	intent.putExtra("position", position);
+			    	startActivity(intent);
 				}
 			});
 			

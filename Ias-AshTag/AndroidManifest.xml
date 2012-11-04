@@ -43,7 +43,7 @@
                 <data android:mimeType="image/*"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TaxaDetails" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".activities.DetailsPager" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"/>
         <activity android:name=".activities.TaxaListing" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"/>
         <activity android:name=".activities.Settings" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"/>
         <activity android:name=".activities.SetLocation" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden" />
