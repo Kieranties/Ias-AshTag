@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
-    android:padding="15dp"
-    android:id="@+id/rootView" >
-       
+    android:padding="15dp" >
+
     <ImageView
         android:id="@+id/imageBanner"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"        
+        android:layout_height="wrap_content"
         android:contentDescription="@string/acc_ashtag_logo"
         android:src="@drawable/banner" />
-    
-    <TextView 
+
+    <TextView
         android:id="@+id/appCaption"
-        android:text="@string/app_caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageBanner"
-        android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/imageBanner"
         android:gravity="center"
         android:paddingBottom="15dp"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp"
+        android:text="@string/app_caption" />
 
     <TextView
         android:id="@+id/emailAddress"
@@ -33,28 +33,27 @@
         android:gravity="center_horizontal"
         android:text="@string/username_title"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-    
+
     <TextView
         android:id="@+id/editUsername"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/username_hint"
         android:layout_below="@+id/emailAddress"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:clickable="true"
-        android:onClick="onUsernameClick" />
-    
-    <Button
-        android:id="@+id/buttonGallery"
+        android:gravity="center_horizontal"
+        android:hint="@string/username_hint"
+        android:onClick="onUsernameClick"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <GridView
+        android:id="@+id/gridview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/ias_main"
-        android:onClick="onViewGalleryClick"
-        android:text="@string/id_guide"
-        android:layout_marginTop="15dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/editUsername" />
+        android:columnWidth="100dip"
+        android:gravity="center"
+        android:horizontalSpacing="4dip"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="4dip" />
 
 </RelativeLayout>
