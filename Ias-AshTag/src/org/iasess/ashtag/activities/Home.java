@@ -4,6 +4,8 @@ import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.api.CampaignModel;
+import org.iasess.ashtag.data.ImageStore;
+import org.iasess.ashtag.data.TaxonStore;
 import org.iasess.ashtag.handlers.ActivityResultHandler;
 import org.iasess.ashtag.handlers.ClickHandler;
 
@@ -11,19 +13,30 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Controls the 'Home' Activity view
  */
 public class Home extends InvadrActivityBase {
+	
+	private TaxonStore taxonStore = new TaxonStore(Home.this);
+	private ImageStore imgStore = new ImageStore(Home.this);
 	
 	/**
      * Initialises the content of the Activity
@@ -34,6 +47,8 @@ public class Home extends InvadrActivityBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);              
         getSupportActionBar().setDisplayShowTitleEnabled(false);   
+        
+        new PopulateGrid().execute(""); // <- TODO: ugly!
         
         setUsernameText(findViewById(R.id.editUsername)); 
         
@@ -71,7 +86,15 @@ public class Home extends InvadrActivityBase {
 	
 		return super.onOptionsItemSelected(item);
 	}
-            
+         
+    @Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		taxonStore.close();
+		imgStore.close();
+	}
+    
     /**
      * Handler to populate and process an Intent to 
      * pass control to the gallery view of the application
@@ -155,5 +178,102 @@ public class Home extends InvadrActivityBase {
 	    		startActivity(intent);
 	    	}
 	    }
+	}
+	
+	/**
+	 * Class to handle the processing of the list content in a separate thread
+	 */
+	private class PopulateGrid extends AsyncTask<String, Void, Cursor> {
+		
+		/**
+		 * The progress dialog to display  to the user during processing
+		 */
+		private ProgressDialog _dlg;
+		
+		/**
+		 * Displays the progress dialog to the user before processing the taxa items
+		 * 
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
+		protected void onPreExecute() {
+			// display the dialog to the user
+			_dlg = ProgressDialog.show(Home.this, "", getResources().getString(R.string.get_details), true,true, new OnCancelListener() {
+				public void onCancel(DialogInterface dialog) {
+					PopulateGrid.this.cancel(true);	
+					finish();
+				}
+			});
+		}
+		
+		/**
+		 * Performs a query against the cached data store.
+		 * Fetches from the API if the store is empty or 'refresh' has been passed in params
+		 * 
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		protected Cursor doInBackground(String... params) {
+			if (params.length > 0 && params[0].equals("refresh")) {
+				taxonStore.update(ApiHandler.getTaxa());
+				return taxonStore.getAll();
+			} else {
+				Cursor taxaCursor = taxonStore.getAll();
+				if (!taxaCursor.moveToFirst()) { // is an empty set
+					taxaCursor.close();
+					
+					// get from the api as not initialised
+					taxonStore.update(ApiHandler.getTaxa());
+
+					// re-fetch cursor data
+					taxaCursor = taxonStore.getAll();
+				}
+
+				return taxaCursor;
+			}
+		}
+
+		/**
+		 * Processes the results of the AsyncTask
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@SuppressWarnings("deprecation")
+		protected void onPostExecute(Cursor result) {
+			startManagingCursor(result);
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+	                 Home.this, // Context.
+	                 R.layout.image_grid_item,
+	                 result,                                              // Pass in the cursor to bind to.
+	                 new String[] { TaxonStore.COL_PK},           // Array of cursor columns to bind to.
+	                 new int[] { R.id.image });  // Parallel array of which template objects to bind to those columns.
+
+	         ViewBinder viewBinder = new ViewBinder() {
+					public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+						if (view.getId() == R.id.image) {
+							
+							// Use UIL to handle caching/image binding
+							ImageView imageSpot = (ImageView) view;							
+							String uri = imgStore.getImage(cursor.getInt(columnIndex), "200");
+							ImageLoader.getInstance().displayImage(uri, imageSpot);		
+							
+							// return true to say we handled to binding
+							return true;
+						}
+						return false;
+					}
+				};
+	         
+	         // Bind to our new adapter.
+			adapter.setViewBinder(viewBinder);
+			GridView gridView = (GridView) findViewById(R.id.gridview);
+			gridView.setAdapter(adapter);
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					//startImageGalleryActivity(position);
+				}
+			});
+			
+			_dlg.dismiss();
+		}
 	}
 }
