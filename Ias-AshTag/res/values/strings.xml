@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_caption">Help halt the spread of the\r\nAsh tree \'die back\' fungus.</string>
+    <string name="app_caption">AshTag is a free tool to help you do your bit to track the spread of the Ash ‘die back’ fungus and limit its impact.</string>
     <string name="app_name">AshTag</string>
     <string name="id_guide">Identification Guide</string>
     <string name="about">About</string>
