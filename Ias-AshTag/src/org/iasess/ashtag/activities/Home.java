@@ -138,9 +138,11 @@ public class Home extends InvadrActivityBase {
 		 * 
 		 * @see android.os.AsyncTask#onPreExecute()
 		 */
+		@Override
 		protected void onPreExecute() {
 			//display the dialog to the user
 			_dlg = ProgressDialog.show(Home.this, "", getResources().getString(R.string.get_details), true,true, new OnCancelListener() {
+				@Override
 				public void onCancel(DialogInterface dialog) {
 					CampaignUpdate.this.cancel(true);	
 					finish();
@@ -153,6 +155,7 @@ public class Home extends InvadrActivityBase {
 		 * 
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
+		@Override
 		protected CampaignModel doInBackground(Void... textValue) {
 	    	//return the response from the api
 	        return ApiHandler.GetCampaignDetails();
@@ -164,7 +167,8 @@ public class Home extends InvadrActivityBase {
 	     * 
 	     * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	     */
-	    protected void onPostExecute(CampaignModel result) {
+	    @Override
+		protected void onPostExecute(CampaignModel result) {
 	    	if(result != null){
 	    		result.save();	    		
 	    	} else {
@@ -195,9 +199,11 @@ public class Home extends InvadrActivityBase {
 		 * 
 		 * @see android.os.AsyncTask#onPreExecute()
 		 */
+		@Override
 		protected void onPreExecute() {
 			// display the dialog to the user
 			_dlg = ProgressDialog.show(Home.this, "", getResources().getString(R.string.get_details), true,true, new OnCancelListener() {
+				@Override
 				public void onCancel(DialogInterface dialog) {
 					PopulateGrid.this.cancel(true);	
 					finish();
@@ -211,6 +217,7 @@ public class Home extends InvadrActivityBase {
 		 * 
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
+		@Override
 		protected Cursor doInBackground(String... params) {
 			if (params.length > 0 && params[0].equals("refresh")) {
 				taxonStore.update(ApiHandler.getTaxa());
@@ -236,6 +243,7 @@ public class Home extends InvadrActivityBase {
 		 * 
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
+		@Override
 		@SuppressWarnings("deprecation")
 		protected void onPostExecute(Cursor result) {
 			startManagingCursor(result);
@@ -247,6 +255,7 @@ public class Home extends InvadrActivityBase {
 	                 new int[] { R.id.image });  // Parallel array of which template objects to bind to those columns.
 
 	         ViewBinder viewBinder = new ViewBinder() {
+					@Override
 					public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 						if (view.getId() == R.id.image) {
 							

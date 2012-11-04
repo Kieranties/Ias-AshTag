@@ -15,6 +15,8 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images.ImageColumns;
+import android.provider.MediaStore.MediaColumns;
 
 /**
  * Singleton class to manage all image interactions with the device camera or
@@ -128,11 +130,11 @@ public final class ImageHandler {
 	 * @return The physical path to the URI
 	 */
 	public static String getPath(Uri uri) {
-		String[] projection = { MediaStore.Images.Media.DATA };
+		String[] projection = { MediaColumns.DATA };
 		ContentResolver resolver = AshTagApp.getContext().getContentResolver();
 		Cursor cursor = resolver.query(uri, projection, null, null, null);
 		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+				.getColumnIndexOrThrow(MediaColumns.DATA);
 		cursor.moveToFirst();
 		String path = cursor.getString(column_index);
 		cursor.close();
@@ -208,6 +210,7 @@ public final class ImageHandler {
 		String[] options = _activity.getResources().getStringArray(
 				R.array.camera_options);
 		builder.setItems(options, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				if (item == 0)
 					cameraIntent();
@@ -225,8 +228,8 @@ public final class ImageHandler {
 	private void cameraIntent() {
 		String fileName = "ias-" + System.currentTimeMillis() + ".jpg";
 		ContentValues values = new ContentValues();
-		values.put(MediaStore.Images.Media.TITLE, fileName);
-		values.put(MediaStore.Images.Media.DESCRIPTION, "Taken for invadr");
+		values.put(MediaColumns.TITLE, fileName);
+		values.put(ImageColumns.DESCRIPTION, "Taken for invadr");
 		lastCreatedImageUri = _activity.getContentResolver().insert(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 

@@ -125,9 +125,11 @@ public class TaxaDetails extends InvadrActivityBase {
 		 * 
 		 * @see android.os.AsyncTask#onPreExecute()
 		 */
+		@Override
 		protected void onPreExecute() {
 			// display the dialog to the user
 			_dlg = ProgressDialog.show(TaxaDetails.this, "", getResources().getString(R.string.get_image), true,true, new OnCancelListener() {
+				@Override
 				public void onCancel(DialogInterface dialog) {
 					PopulateImages.this.cancel(true);	
 					finish();
@@ -140,6 +142,7 @@ public class TaxaDetails extends InvadrActivityBase {
 		 * 
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
+		@Override
 		protected String doInBackground(Long... params) {
 			return imgStore.getImage(params[0], "1200");
 		}
@@ -149,6 +152,7 @@ public class TaxaDetails extends InvadrActivityBase {
 		 * 
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
+		@Override
 		protected void onPostExecute(String result) {		
 			final String failText = getResources().getString(R.string.get_image_fail);
 			if(result == null){
@@ -160,23 +164,27 @@ public class TaxaDetails extends InvadrActivityBase {
 				ImageLoader.getInstance().displayImage(image, iv, new ImageLoadingListener() {
 				
 					
+					@Override
 					public void onLoadingFailed(FailReason failReason) {
 						AshTagApp.makeToast(failText);
 						_dlg.dismiss();
 					}
 
 					
+					@Override
 					public void onLoadingComplete(Bitmap loadedImage) {
 						iv.setVisibility(View.VISIBLE);
 						_dlg.dismiss();
 					}
 
 					
+					@Override
 					public void onLoadingCancelled() {
 						// Do nothing
 					}
 
 
+					@Override
 					public void onLoadingStarted() {
 						// TODO Auto-generated method stub
 						

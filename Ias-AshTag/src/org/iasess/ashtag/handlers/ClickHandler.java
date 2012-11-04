@@ -66,8 +66,8 @@ public class ClickHandler {
 	            }
 	        };
 	        
-	        setButton(AlertDialog.BUTTON_POSITIVE, context.getResources().getString(android.R.string.ok), stubListener);	        
-	        setButton(AlertDialog.BUTTON_NEGATIVE, context.getResources().getString(android.R.string.cancel), stubListener);
+	        setButton(DialogInterface.BUTTON_POSITIVE, context.getResources().getString(android.R.string.ok), stubListener);	        
+	        setButton(DialogInterface.BUTTON_NEGATIVE, context.getResources().getString(android.R.string.cancel), stubListener);
 	        _toastText = context.getResources().getString(R.string.username_invalid);
 	        
 		}
@@ -76,7 +76,7 @@ public class ClickHandler {
 	    protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 
-	        getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+	        getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 	            @Override
 	            public void onClick(View v) {
 	            	String value = _input.getText().toString();

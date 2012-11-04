@@ -103,6 +103,7 @@ public class TaxaListing extends SherlockListActivity {
 		 * 
 		 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
 		 */
+		@Override
 		public void onItemClick(AdapterView<?> adapter, View view, int position, long rowId) {				
 			Intent intent = new Intent(AshTagApp.getContext(), TaxaDetails.class);		
 			Cursor cursor = (Cursor) adapter.getItemAtPosition(position);
@@ -130,9 +131,11 @@ public class TaxaListing extends SherlockListActivity {
 		 * 
 		 * @see android.os.AsyncTask#onPreExecute()
 		 */
+		@Override
 		protected void onPreExecute() {
 			// display the dialog to the user
 			_dlg = ProgressDialog.show(TaxaListing.this, "", getResources().getString(R.string.get_details), true,true, new OnCancelListener() {
+				@Override
 				public void onCancel(DialogInterface dialog) {
 					PopulateList.this.cancel(true);	
 					finish();
@@ -146,6 +149,7 @@ public class TaxaListing extends SherlockListActivity {
 		 * 
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
+		@Override
 		protected Cursor doInBackground(String... params) {
 			if (params.length > 0 && params[0].equals("refresh")) {
 				taxonStore.update(ApiHandler.getTaxa());
@@ -171,6 +175,7 @@ public class TaxaListing extends SherlockListActivity {
 		 * 
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
+		@Override
 		@SuppressWarnings("deprecation")
 		protected void onPostExecute(Cursor result) {
 			startManagingCursor(result);
@@ -182,6 +187,7 @@ public class TaxaListing extends SherlockListActivity {
 	                 new int[] { R.id.textPrimary, R.id.icon });  // Parallel array of which template objects to bind to those columns.
 
 	         ViewBinder viewBinder = new ViewBinder() {
+					@Override
 					public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 						if (view.getId() == R.id.icon) {
 							
@@ -199,7 +205,7 @@ public class TaxaListing extends SherlockListActivity {
 	         
 	         // Bind to our new adapter.
 			adapter.setViewBinder(viewBinder);
-	        setListAdapter((ListAdapter)adapter);
+	        setListAdapter(adapter);
 			
 			_dlg.dismiss();
 		}

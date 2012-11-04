@@ -190,6 +190,7 @@ public class SetLocation extends SherlockMapActivity{
 		//prepare the default overlay to fetch current location	
 		_locationOverlay.enableMyLocation();
 		_locationOverlay.runOnFirstFix(new Runnable(){
+			@Override
 			public void run() {				
 				//get the location and set properties
 				GeoPoint loc = _locationOverlay.getMyLocation();
@@ -221,9 +222,11 @@ public class SetLocation extends SherlockMapActivity{
 		 * 
 		 * @see android.os.AsyncTask#onPreExecute()
 		 */
+		@Override
 		protected void onPreExecute() {
 			//display the dialog to the user
 			_dlg = ProgressDialog.show(SetLocation.this, "", getResources().getString(R.string.submitting), true,true, new OnCancelListener() {
+				@Override
 				public void onCancel(DialogInterface dialog) {
 					SubmitSightingTask.this.cancel(true);	
 					finish();
@@ -236,7 +239,8 @@ public class SetLocation extends SherlockMapActivity{
 	     * 
 	     * @see android.os.AsyncTask#doInBackground(Params[])
 	     */
-	    protected SubmissionResponse doInBackground(String... params) {
+	    @Override
+		protected SubmissionResponse doInBackground(String... params) {
 	    	//don't need params    
 	    	Location fix = _locationOverlay.getLastFix();
 	    	_submitParcel.setLocation(fix.getLatitude(), fix.getLongitude());
@@ -248,7 +252,8 @@ public class SetLocation extends SherlockMapActivity{
 	     * 
 	     * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	     */
-	    protected void onPostExecute(SubmissionResponse result) {	    	
+	    @Override
+		protected void onPostExecute(SubmissionResponse result) {	    	
 	    	_dlg.dismiss();
 	    	if(result.getId() != Integer.MIN_VALUE){
 	    		AshTagApp.makeToast(getResources().getString(R.string.submitted));    		

@@ -77,11 +77,13 @@ public class SubmitParcel implements Parcelable {
 
 	/** Parcelable implementation **/
 
+	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(_imgPath);
 		dest.writeDouble(_latitude);
@@ -90,10 +92,12 @@ public class SubmitParcel implements Parcelable {
 	}
 
 	public static final Parcelable.Creator<SubmitParcel> CREATOR = new Parcelable.Creator<SubmitParcel>() {
+		@Override
 		public SubmitParcel createFromParcel(Parcel in) {
 			return new SubmitParcel(in);
 		}
 
+		@Override
 		public SubmitParcel[] newArray(int size) {
 			return new SubmitParcel[size];
 		}
