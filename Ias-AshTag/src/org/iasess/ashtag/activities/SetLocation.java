@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
 import org.iasess.ashtag.api.ApiHandler;
@@ -20,6 +21,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,7 +38,6 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.OverlayItem;
 
 /**
@@ -49,10 +50,10 @@ public class SetLocation extends SherlockMapActivity {
 	private SubmitParcel _submitParcel;
 
 	private MapController _mapController;
-	private MyLocationOverlay _locationOverlay;
 	private LocationManager _locationManager;
 	private SightingOverlay _sightingOverlay;
 	private MapView _mapView;
+	private Location _gpsLocation;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,12 +78,8 @@ public class SetLocation extends SherlockMapActivity {
 		_sightingOverlay = new SightingOverlay(marker);
 		_mapView.getOverlays().add(_sightingOverlay);
 
-		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		String provider = _locationManager.getBestProvider(criteria, true);
-
-		Location loc = _locationManager.getLastKnownLocation(provider);
-		_sightingOverlay.setMarker(loc);
+		setLastBestLocation();
+		registerForGPSUpdates();
 	}
 
 	@Override
@@ -100,12 +97,25 @@ public class SetLocation extends SherlockMapActivity {
 			return true;
 		case R.id.btnSend:
 			GeoPoint point = _sightingOverlay.getMarkerLocation();
-			if(point != null) {}//new SubmitSightingTask().execute(point);
+			if(point != null) new SubmitSightingTask().execute(point);
 			else AshTagApp.makeToast("Please set a location");
 			return true;
 		case R.id.btnImageLocation:
+			float[] locationData = ImageHandler.getImageLocation(_submitParcel.getImagePath());
+			if(locationData != null){
+				_sightingOverlay.setMarker(locationData[0], locationData[1]);
+			} else {
+				AshTagApp.makeToast("Could not read location from image");
+			}
 			return true;
 		case R.id.btnMyLocation:
+			if(_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+				registerForGPSUpdates();
+			} else {
+				AshTagApp.makeToast(this, getResources().getString(R.string.enable_gps));
+				Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				startActivityForResult(gpsIntent, GPS_INTENT);
+			}
 			return true;
 		}
 
@@ -132,18 +142,16 @@ public class SetLocation extends SherlockMapActivity {
 		super.onPause();
 	}
 
-	/**
-	 * Handlesthe response of an ActivityResult fired in the context of this
-	 * Activity
-	 * 
-	 * @see android.app.Activity#onActivityResult(int, int,
-	 *      android.content.Intent)
-	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == Activity.RESULT_OK && requestCode == GPS_INTENT) {
-			// renderMapView();
+		if (requestCode == GPS_INTENT) {
+			if(_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+				_gpsLocation = _locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			} else {
+				AshTagApp.makeToast("GPS not enabled");
+			}
+			setLastBestLocation();
 		}
 	}
 
@@ -154,7 +162,43 @@ public class SetLocation extends SherlockMapActivity {
 		AshTagApp.unbindDrawables(findViewById(R.id.rootView));
 		System.gc();
 	}
+	
+	
+	private void registerForGPSUpdates(){		
+		LocationListener locationListener = new LocationListener() {
+		    public void onLocationChanged(Location location) {
+		    	if(_gpsLocation == null) _gpsLocation = location;
+		    	else{
+		    		if((location.getAccuracy() - _gpsLocation.getAccuracy()) < 0){
+		    			_gpsLocation = location;
+		    		}
+		    	}
+		    }
 
+		    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+		    public void onProviderEnabled(String provider) {}
+
+		    public void onProviderDisabled(String provider) {}
+		  };
+				  
+		// Register the listener with the Location Manager to receive location updates
+		_locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+			
+				
+	}
+	
+	private void setLastBestLocation(){
+		if(_gpsLocation == null){
+			Criteria criteria = new Criteria();
+			criteria.setAccuracy(Criteria.ACCURACY_FINE);
+			String provider = _locationManager.getBestProvider(criteria, true);
+			
+			_gpsLocation = _locationManager.getLastKnownLocation(provider);
+		}
+		_sightingOverlay.setMarker(_gpsLocation.getLatitude(), _gpsLocation.getLongitude());
+	}
+	
 	/**
 	 * Class to handle the submission of details in a separate thread
 	 * 
@@ -188,10 +232,9 @@ public class SetLocation extends SherlockMapActivity {
 
 		@Override
 		protected SubmissionResponse doInBackground(GeoPoint... params) {
-			// don't need params
 			double latitude = params[0].getLatitudeE6() / 1E6;
 			double longitude = params[0].getLongitudeE6() / 1E6;
-			_submitParcel.setLocation(latitude, longitude);
+			_submitParcel.setLocation(latitude, longitude);			
 			return ApiHandler.submitSighting(_submitParcel);
 		}
 
@@ -313,9 +356,8 @@ public class SetLocation extends SherlockMapActivity {
 			return (result || super.onTouchEvent(event, mapView));
 		}
 
-		public void setMarker(Location loc) {
-			GeoPoint point = new GeoPoint((int) (loc.getLatitude() * 1e6),
-					(int) (loc.getLongitude() * 1e6));
+		public void setMarker(double lat, double lon) {		
+			GeoPoint point = new GeoPoint((int) (lat * 1E6), (int) (lon * 1E6));
 			OverlayItem item = new OverlayItem(point, null, null);
 			items.clear();
 			items.add(item);
