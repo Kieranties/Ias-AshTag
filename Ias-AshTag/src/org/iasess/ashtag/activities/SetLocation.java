@@ -280,9 +280,9 @@ public class SetLocation extends SherlockMapActivity {
 		_sightingOverlay = new SightingOverlay(marker);
 		_mapView.getOverlays().add(_sightingOverlay);
 
-		//check the image for location
+		// check the image for location
 		_imageLocation = ImageHandler.getImageLocation(_submitParcel.getImagePath());
-		
+
 		setLastBestLocation();
 		registerForGPSUpdates();
 	}
@@ -295,12 +295,13 @@ public class SetLocation extends SherlockMapActivity {
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu (Menu menu){
-		if(_imageLocation == null){
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (_imageLocation == null) {
 			menu.findItem(R.id.btnImageLocation).setVisible(false);
 		}
 		return true;
 	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -353,7 +354,7 @@ public class SetLocation extends SherlockMapActivity {
 	protected void onPause() {
 		super.onPause();
 	}
-		
+
 	private void registerForGPSUpdates() {
 		LocationListener locationListener = new LocationListener(){
 			@Override
@@ -384,15 +385,17 @@ public class SetLocation extends SherlockMapActivity {
 	}
 
 	private void setLastBestLocation() {
-		if(_imageLocation != null){
+		if (_imageLocation != null) {
 			_sightingOverlay.setMarker(_imageLocation[0], _imageLocation[1]);
-		} else if (_gpsLocation == null) {
-			Criteria criteria = new Criteria();
-			criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-			String provider = _locationManager.getBestProvider(criteria, true);
+			AshTagApp.makeToast("Location set from image");
+		} else
+			if (_gpsLocation == null) {
+				Criteria criteria = new Criteria();
+				criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+				String provider = _locationManager.getBestProvider(criteria, true);
 
-			_gpsLocation = _locationManager.getLastKnownLocation(provider);
-		}
+				_gpsLocation = _locationManager.getLastKnownLocation(provider);
+			}
 		_sightingOverlay.setMarker(_gpsLocation.getLatitude(), _gpsLocation.getLongitude());
 	}
 }
