@@ -27,6 +27,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.viewpagerindicator.LinePageIndicator;
 
 /**
  * Controls the 'TaxaDetails' Activity view
@@ -157,6 +158,9 @@ public class DetailsPager extends InvadrActivityBase {
 		startManagingCursor(taxaCursor);
 		ViewPager pager = (ViewPager)findViewById(R.id.pager);
 		pager.setAdapter(new ImagePagerAdapter(taxaCursor));
+		LinePageIndicator indicator = (LinePageIndicator)findViewById(R.id.indicator);
+		indicator.setViewPager(pager);
+		indicator.notifyDataSetChanged();
 		pager.setCurrentItem(position);
 	}
 
