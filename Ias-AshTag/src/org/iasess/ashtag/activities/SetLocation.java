@@ -229,6 +229,7 @@ public class SetLocation extends SherlockMapActivity {
 	private SubmitParcel _submitParcel;
 	private MapController _mapController;
 	private LocationManager _locationManager;
+	private LocationListener _locationListener;
 	private SightingOverlay _sightingOverlay;
 	private float[] _imageLocation;
 	private ProgressDialog _dlg;
@@ -349,10 +350,17 @@ public class SetLocation extends SherlockMapActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		_locationManager.removeUpdates(_locationListener);
+	}
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+		registerForGPSUpdates();
 	}
 
 	private void registerForGPSUpdates() {
-		LocationListener locationListener = new LocationListener(){
+		_locationListener = new LocationListener(){
 			@Override
 			public void onLocationChanged(Location location) {
 				if (_dlg != null && _dlg.isShowing()) {
@@ -362,7 +370,12 @@ public class SetLocation extends SherlockMapActivity {
 			}
 
 			@Override
-			public void onProviderDisabled(String provider) {}
+			public void onProviderDisabled(String provider) {
+				if (_dlg != null && _dlg.isShowing()) {
+					_dlg.dismiss();
+					setBestNetworkLocation();
+				}
+			}
 
 			@Override
 			public void onProviderEnabled(String provider) {}
@@ -371,9 +384,7 @@ public class SetLocation extends SherlockMapActivity {
 			public void onStatusChanged(String provider, int status, Bundle extras) {}
 		};
 
-		// Register the listener with the Location Manager to receive location
-		// updates
-		_locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		_locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, _locationListener);
 
 	}
 
