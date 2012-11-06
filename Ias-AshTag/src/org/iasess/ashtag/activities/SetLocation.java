@@ -385,7 +385,7 @@ public class SetLocation extends SherlockMapActivity {
 
 	private void setByGps(boolean waitForNextFix) {
 		if (waitForNextFix) {
-			_dlg = ProgressDialog.show(this, "", getResources().getString(R.string.get_details), true, true,
+			_dlg = ProgressDialog.show(this, "Finding location", "Searching", true, true,
 				new OnCancelListener(){
 					@Override
 					public void onCancel(DialogInterface dialog) {
@@ -409,7 +409,9 @@ public class SetLocation extends SherlockMapActivity {
 	}
 
 	private void offerGps() {
-		new AlertDialog.Builder(this).setMessage("Would you like to enable GPS for a better position?")
+		new AlertDialog.Builder(this)
+			.setTitle("GPS is off")
+			.setMessage("Would you like to enable GPS for a better position?")
 			.setNegativeButton(android.R.string.cancel, new OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

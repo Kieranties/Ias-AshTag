@@ -253,6 +253,7 @@ public final class ImageHandler {
 	 */
 	public void showChooser() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
+		builder.setTitle("Image options");
 		// set items from resource list
 		String[] options = _activity.getResources().getStringArray(R.array.camera_options);
 		builder.setItems(options, new DialogInterface.OnClickListener(){
