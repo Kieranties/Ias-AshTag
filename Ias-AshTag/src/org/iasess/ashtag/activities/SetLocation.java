@@ -38,6 +38,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.OverlayItem;
 
 /**
@@ -230,6 +231,7 @@ public class SetLocation extends SherlockMapActivity {
 	private MapController _mapController;
 	private LocationManager _locationManager;
 	private LocationListener _locationListener;
+	private MyLocationOverlay _myLoc;
 	private SightingOverlay _sightingOverlay;
 	private float[] _imageLocation;
 	private ProgressDialog _dlg;
@@ -395,17 +397,27 @@ public class SetLocation extends SherlockMapActivity {
 	}
 
 	private void setByGps(boolean waitForNextFix) {
-		if (waitForNextFix) {
+		if (_myLoc == null || waitForNextFix) {
+			_myLoc = new MyLocationOverlay(this, _mapView);
+			
 			_dlg = ProgressDialog.show(this, "Finding location", "Searching", true, true,
 				new OnCancelListener(){
 					@Override
 					public void onCancel(DialogInterface dialog) {
 						setByNetwork();
+						_myLoc.disableMyLocation();
 					}
 				});
+			_myLoc.runOnFirstFix(new Runnable(){				
+				@Override
+				public void run() {
+					_dlg.dismiss();
+					_gpsLocation = _myLoc.getLastFix();	
+					_myLoc.disableMyLocation();
+				}
+			});
 			return;
 		}
-		_gpsLocation = _locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		AshTagApp.makeToast("Location set from GPS");
 		_sightingOverlay.setMarker(_gpsLocation.getLatitude(), _gpsLocation.getLongitude());
 	}
@@ -441,7 +453,7 @@ public class SetLocation extends SherlockMapActivity {
 
 	private void setBestNetworkLocation() {
 		if (isGpsEnabled()) {
-			setByGps(true);
+			setByGps(false);
 		} else {
 			offerGps();
 		}
