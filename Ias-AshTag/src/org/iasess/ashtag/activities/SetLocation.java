@@ -11,14 +11,15 @@ import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.api.SubmissionResponse;
 import org.iasess.ashtag.handlers.ActivityResultHandler;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -230,6 +231,7 @@ public class SetLocation extends SherlockMapActivity {
 	private LocationManager _locationManager;
 	private SightingOverlay _sightingOverlay;
 	private float[] _imageLocation;
+	private ProgressDialog _dlg;
 
 	private MapView _mapView;
 
@@ -249,12 +251,11 @@ public class SetLocation extends SherlockMapActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == GPS_INTENT) {
-			if (_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-				_gpsLocation = _locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if (isGpsEnabled()) {
+				setByGps(true);
 			} else {
-				AshTagApp.makeToast("GPS not enabled");
+				setByNetwork();
 			}
-			setLastBestLocation();
 		}
 	}
 
@@ -283,8 +284,14 @@ public class SetLocation extends SherlockMapActivity {
 		// check the image for location
 		_imageLocation = ImageHandler.getImageLocation(_submitParcel.getImagePath());
 
-		setLastBestLocation();
 		registerForGPSUpdates();
+
+		if (_imageLocation != null) {
+			setByImage();
+		} else {
+			setBestNetworkLocation();
+		}
+
 	}
 
 	@Override
@@ -324,21 +331,10 @@ public class SetLocation extends SherlockMapActivity {
 					AshTagApp.makeToast("Please set a location");
 				return true;
 			case R.id.btnImageLocation:
-				float[] locationData = ImageHandler.getImageLocation(_submitParcel.getImagePath());
-				if (locationData != null) {
-					_sightingOverlay.setMarker(locationData[0], locationData[1]);
-				} else {
-					AshTagApp.makeToast("Could not read location from image");
-				}
+				setByImage();
 				return true;
 			case R.id.btnMyLocation:
-				if (_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-					registerForGPSUpdates();
-				} else {
-					AshTagApp.makeToast(this, getResources().getString(R.string.enable_gps));
-					Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-					startActivityForResult(gpsIntent, GPS_INTENT);
-				}
+				setBestNetworkLocation();
 				return true;
 		}
 
@@ -359,12 +355,9 @@ public class SetLocation extends SherlockMapActivity {
 		LocationListener locationListener = new LocationListener(){
 			@Override
 			public void onLocationChanged(Location location) {
-				if (_gpsLocation == null)
-					_gpsLocation = location;
-				else {
-					if ((location.getAccuracy() - _gpsLocation.getAccuracy()) < 0) {
-						_gpsLocation = location;
-					}
+				if (_dlg != null && _dlg.isShowing()) {
+					_dlg.dismiss();
+					setByGps(false);
 				}
 			}
 
@@ -384,18 +377,60 @@ public class SetLocation extends SherlockMapActivity {
 
 	}
 
-	private void setLastBestLocation() {
-		if (_imageLocation != null) {
-			_sightingOverlay.setMarker(_imageLocation[0], _imageLocation[1]);
-			AshTagApp.makeToast("Location set from image");
-		} else
-			if (_gpsLocation == null) {
-				Criteria criteria = new Criteria();
-				criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-				String provider = _locationManager.getBestProvider(criteria, true);
-
-				_gpsLocation = _locationManager.getLastKnownLocation(provider);
-			}
+	private void setByNetwork() {
+		_gpsLocation = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		AshTagApp.makeToast("Location set from network");
 		_sightingOverlay.setMarker(_gpsLocation.getLatitude(), _gpsLocation.getLongitude());
+	}
+
+	private void setByGps(boolean waitForNextFix) {
+		if (waitForNextFix) {
+			_dlg = ProgressDialog.show(this, "", getResources().getString(R.string.get_details), true, true,
+				new OnCancelListener(){
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						setByNetwork();
+					}
+				});
+			return;
+		}
+		_gpsLocation = _locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		AshTagApp.makeToast("Location set from GPS");
+		_sightingOverlay.setMarker(_gpsLocation.getLatitude(), _gpsLocation.getLongitude());
+	}
+
+	private void setByImage() {
+		_sightingOverlay.setMarker(_imageLocation[0], _imageLocation[1]);
+		AshTagApp.makeToast("Location set from image");
+	}
+
+	private boolean isGpsEnabled() {
+		return _locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	}
+
+	private void offerGps() {
+		new AlertDialog.Builder(this).setMessage("Would you like to enable GPS for a better position?")
+			.setNegativeButton(android.R.string.cancel, new OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					setByNetwork();
+				}
+			}).setPositiveButton(android.R.string.ok, new OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					AshTagApp.makeToast(getResources().getString(R.string.enable_gps));
+					Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+					startActivityForResult(gpsIntent, GPS_INTENT);
+				}
+			}).show();
+
+	}
+
+	private void setBestNetworkLocation() {
+		if (isGpsEnabled()) {
+			setByGps(true);
+		} else {
+			offerGps();
+		}
 	}
 }
