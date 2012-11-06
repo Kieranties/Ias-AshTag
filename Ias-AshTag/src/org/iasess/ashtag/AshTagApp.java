@@ -103,7 +103,7 @@ public class AshTagApp extends Application {
 	 * @see Toast
 	 */
 	public static void makeToast(ContextWrapper context, String message) {
-		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 	}
 
 	/**
