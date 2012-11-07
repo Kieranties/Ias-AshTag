@@ -187,22 +187,26 @@ public class SetLocation extends SherlockMapActivity {
 		@Override
 		protected void onPostExecute(SubmissionResponse result) {
 			_dlg.dismiss();
-			if (result.getId() != Integer.MIN_VALUE) {
-				AshTagApp.makeToast(getResources().getString(R.string.submitted));
-
-				if (_submitParcel.getIsExternal()) {
-					setResult(ActivityResultHandler.CLOSE_ALL);
-					finish();
+			try{
+				if (result.getId() != Integer.MIN_VALUE) {
+					AshTagApp.makeToast(getResources().getString(R.string.submitted));
+	
+					if (_submitParcel.getIsExternal()) {
+						setResult(ActivityResultHandler.CLOSE_ALL);
+						finish();
+					} else {
+						// we're done for this submission so return the app to the
+						// start
+						Intent home = new Intent(SetLocation.this, Home.class);
+						home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // resets the
+																		// activity
+																		// stack
+						startActivity(home);
+					}
 				} else {
-					// we're done for this submission so return the app to the
-					// start
-					Intent home = new Intent(SetLocation.this, Home.class);
-					home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // resets the
-																	// activity
-																	// stack
-					startActivity(home);
+					AshTagApp.makeToast(getResources().getString(R.string.submitting_fail));
 				}
-			} else {
+			} catch (Exception ex) {
 				AshTagApp.makeToast(getResources().getString(R.string.submitting_fail));
 			}
 		}
