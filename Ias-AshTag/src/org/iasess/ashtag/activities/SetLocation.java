@@ -144,16 +144,23 @@ public class SetLocation extends SherlockMapActivity {
 
 		public void setMarker(double lat, double lon) {
 			GeoPoint point = new GeoPoint((int)(lat * 1E6), (int)(lon * 1E6));
+			setMarker(point);
+
+		}
+
+		public void setMarker(Location loc){
+			setMarker(loc.getLatitude(), loc.getLongitude());
+		}
+		
+		public void setMarker(GeoPoint point){
 			OverlayItem item = new OverlayItem(point, null, null);
 			items.clear();
 			items.add(item);
 			populate();
 			_mapController.animateTo(point);
 			_mapController.setZoom(18);
-			AshTagApp.makeToast("Drag to refine position");
-
 		}
-
+		
 		@Override
 		public int size() {
 			return (items.size());
@@ -242,7 +249,7 @@ public class SetLocation extends SherlockMapActivity {
 
 	private MapView _mapView;
 
-	private Location _gpsLocation;
+	private Location _lastKnownLocation;
 
 	/**
 	 * Required override when using MapView
@@ -258,11 +265,7 @@ public class SetLocation extends SherlockMapActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == GPS_INTENT) {
-			if (isGpsEnabled()) {
-				setByGps(true);
-			} else {
-				setByNetwork();
-			}
+			setMyLocation();
 		}
 	}
 
@@ -290,9 +293,11 @@ public class SetLocation extends SherlockMapActivity {
 
 		// check the image for location
 		_imageLocation = ImageHandler.getImageLocation(_submitParcel.getImagePath());
-
-		registerForGPSUpdates();
-
+		
+		// set last known based on the last known network connection
+		_lastKnownLocation = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		_sightingOverlay.setMarker(_lastKnownLocation);
+		
 		if (_imageLocation != null) {
 			setByImage();
 		} else {
@@ -356,74 +361,39 @@ public class SetLocation extends SherlockMapActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		_locationManager.removeUpdates(_locationListener);
+		if(_myLoc != null){
+			_myLoc.disableCompass();
+			_myLoc = null;
+		}
 	}
 	
 	@Override
 	protected void onResume(){
 		super.onResume();
-		registerForGPSUpdates();
 	}
 
-	private void registerForGPSUpdates() {
-		_locationListener = new LocationListener(){
-			@Override
-			public void onLocationChanged(Location location) {
-				if (_dlg != null && _dlg.isShowing()) {
-					_dlg.dismiss();
-					setByGps(false);
-				}
-			}
-
-			@Override
-			public void onProviderDisabled(String provider) {
-				if (_dlg != null && _dlg.isShowing()) {
-					_dlg.dismiss();
-					setBestNetworkLocation();
-				}
-			}
-
-			@Override
-			public void onProviderEnabled(String provider) {}
-
-			@Override
-			public void onStatusChanged(String provider, int status, Bundle extras) {}
-		};
-
-		_locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, _locationListener);
-
-	}
-
-	private void setByNetwork() {
-		_gpsLocation = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		AshTagApp.makeToast("Location set from network");
-		_sightingOverlay.setMarker(_gpsLocation.getLatitude(), _gpsLocation.getLongitude());
-	}
-
-	private void setByGps(boolean waitForNextFix) {
-		if (_myLoc == null || waitForNextFix) {
-			_myLoc = new MyLocationOverlay(this, _mapView);
-			
-			_dlg = ProgressDialog.show(this, "Finding location", "Searching", true, true,
-				new OnCancelListener(){
-					@Override
-					public void onCancel(DialogInterface dialog) {
-						setByNetwork();
-						_myLoc.disableMyLocation();
-					}
-				});
-			_myLoc.runOnFirstFix(new Runnable(){				
+	private void setMyLocation() {
+		_myLoc = new MyLocationOverlay(this, _mapView);
+		
+		_dlg = ProgressDialog.show(this, "Finding location", "Searching", true, true,
+			new OnCancelListener(){
 				@Override
-				public void run() {
-					_dlg.dismiss();
-					_gpsLocation = _myLoc.getLastFix();	
+				public void onCancel(DialogInterface dialog) {
 					_myLoc.disableMyLocation();
+					_myLoc = null;						
 				}
 			});
-			return;
-		}
-		AshTagApp.makeToast("Location set from GPS");
-		_sightingOverlay.setMarker(_gpsLocation.getLatitude(), _gpsLocation.getLongitude());
+		
+		_myLoc.runOnFirstFix(new Runnable(){				
+			@Override
+			public void run() {
+				_dlg.dismiss();
+				_sightingOverlay.setMarker(_myLoc.getMyLocation());	
+				_myLoc.disableMyLocation();
+			}
+		});
+		
+		_myLoc.enableMyLocation();
 	}
 
 	private void setByImage() {
@@ -442,7 +412,7 @@ public class SetLocation extends SherlockMapActivity {
 			.setNegativeButton(android.R.string.cancel, new OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					setByNetwork();
+					setMyLocation();
 				}
 			}).setPositiveButton(android.R.string.ok, new OnClickListener(){
 				@Override
@@ -457,7 +427,7 @@ public class SetLocation extends SherlockMapActivity {
 
 	private void setBestNetworkLocation() {
 		if (isGpsEnabled()) {
-			setByGps(false);
+			setMyLocation();
 		} else {
 			offerGps();
 		}
