@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/rootView" >
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/imageBanner"
@@ -12,21 +12,21 @@
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:contentDescription="@string/acc_ashtag_logo"
-        android:src="@drawable/banner" />
+        android:src="@drawable/banner" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/iasCaption"
-            android:text="@string/powered_by"
-            android:autoLink="all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:autoLink="all"
             android:paddingRight="5dp"
-            />
-        
+            android:text="@string/powered_by" />
+
         <ImageView
             android:id="@+id/iasBanner"
             android:layout_width="32dp"
@@ -35,22 +35,23 @@
             android:contentDescription="@string/acc_ias_logo"
             android:src="@drawable/iasicon" />
     </RelativeLayout>
-    
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:fillViewport="true"
-        android:layout_marginTop="5dp" >
+        android:layout_marginTop="5dp"
+        android:fillViewport="true" >
 
         <TextView
             android:id="@+id/textAboutBlurb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
+            android:autoLink="all"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:autoLink="all" />
+            android:text="@string/campaign_about" />
     </ScrollView>
 
 </LinearLayout>
