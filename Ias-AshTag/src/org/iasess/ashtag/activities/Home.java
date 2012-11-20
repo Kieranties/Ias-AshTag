@@ -3,7 +3,6 @@ package org.iasess.ashtag.activities;
 import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.ExtendedImageDownloader;
 import org.iasess.ashtag.R;
-import org.iasess.ashtag.api.ApiHandler;
 import org.iasess.ashtag.data.GuideStore;
 import org.iasess.ashtag.handlers.ActivityResultHandler;
 import org.iasess.ashtag.handlers.ClickHandler;
