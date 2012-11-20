@@ -2,6 +2,7 @@ package org.iasess.ashtag.activities;
 
 import java.net.URI;
 
+import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.SubmitParcel;
@@ -35,9 +36,14 @@ public class AddPhoto extends InvadrActivityBase {
 		if (resultCode == Activity.RESULT_OK) {
 			// we're expecting the intent to have been an image type initiated
 			// by this app
+			
 			String path = ImageHandler.getImagePathFromIntentResult(resultCode, requestCode, data);
-			_package.setImagePath(path);
-			setImageView();
+			if(path == null){
+				AshTagApp.makeToast("Could not read image");
+			} else {
+				_package.setImagePath(path);
+				setImageView();
+			}
 		}
 	}
 

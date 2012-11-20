@@ -1,9 +1,14 @@
 package org.iasess.ashtag;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.iasess.ashtag.activities.Home;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +24,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v4.content.CursorLoader;
+import android.util.Log;
 
 /**
  * Singleton class to manage all image interactions with the device camera or
@@ -44,51 +50,6 @@ public final class ImageHandler {
 	 * Holds the URI of the last created image by the devices camera
 	 */
 	private static Uri lastCreatedImageUri;
-
-	/**
-	 * Fetches the Bitmap of the given URI
-	 * 
-	 * @param uri
-	 *            The URI to return a Bitmap for
-	 * @return The Bitmap of the URI correctly orientated
-	 */
-	public static Bitmap getBitmap(String imgPath) {
-		Bitmap bm = null;
-		try {
-			// http://stackoverflow.com/a/823966 => winner!
-
-			// get the size of the image to scale without loading the actual
-			// bitmap
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(imgPath, options);
-
-			// Find the correct scale value. It should be the power of 2.
-			int scale = 1;
-			final int MAX_WIDTH = 800; // ==> set to arbitrary value as
-										// measuring views is an arse
-			while (options.outWidth / scale / 2 >= MAX_WIDTH)
-				scale *= 2;
-
-			// Decode with inSampleSize to save memory
-			options = new BitmapFactory.Options();
-			options.inSampleSize = scale;
-			bm = BitmapFactory.decodeFile(imgPath, options);
-
-			// check it's orientation
-			int rotation = getImageRotation(imgPath);
-			if (rotation != 0) {
-				// rotate if required
-				Matrix mtx = new Matrix();
-				mtx.postRotate(rotation);
-				bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), mtx, true);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return bm;
-	}
 
 	private static ExifInterface getExifData(String imgPath) throws IOException {
 		return new ExifInterface(imgPath);
@@ -123,16 +84,37 @@ public final class ImageHandler {
 	public static String getImagePathFromIntentResult(int resultCode, int requestCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 
-			Uri selectedUri = null;
-			switch (requestCode) {
-				case ImageHandler.GALLERY_OPTION:
-					return getRealPathFromURI(data.getData());
-				case ImageHandler.CAMERA_OPTION:
-					selectedUri = lastCreatedImageUri;
-					Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-					mediaScanIntent.setData(selectedUri);
-					AshTagApp.getContext().sendBroadcast(mediaScanIntent);
-					return selectedUri.getPath();
+			try{						
+				Uri selectedUri = null;
+				switch (requestCode) {
+					case ImageHandler.GALLERY_OPTION:
+						String path = getRealPathFromURI(data.getData());
+						if(path != null){ return path; }
+						
+					    final InputStream is =  AshTagApp.getContext().getContentResolver().openInputStream(data.getData());
+					    File f = createImageFile();
+					    OutputStream os = new FileOutputStream(f);
+					    int read = 0;
+						byte[] bytes = new byte[1024];
+					 
+						while ((read = is.read(bytes)) != -1) {
+							os.write(bytes, 0, read);
+						}
+					 
+						is.close();
+						os.flush();
+						os.close();
+					    return f.getPath();
+					    
+					case ImageHandler.CAMERA_OPTION:
+						selectedUri = lastCreatedImageUri;
+						Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+						mediaScanIntent.setData(selectedUri);
+						AshTagApp.getContext().sendBroadcast(mediaScanIntent);
+						return selectedUri.getPath();
+				}
+			} catch (Exception e) {
+				Log.e("AshTag", "Error while processing image: " + e.getMessage());
 			}
 		}
 		return null;
@@ -219,12 +201,11 @@ public final class ImageHandler {
 		_activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), CAMERA_OPTION);
 	}
 
-	private File createImageFile() throws IOException {
+	private static File createImageFile() throws IOException {
 
-		File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-			"AshTag");
-		if (storageDir.canWrite()) {
-			storageDir.mkdirs();
+		File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"AshTag");
+		storageDir.mkdirs();
+		if (storageDir.isDirectory() && storageDir.canWrite()) {			
 
 			// Create an image file name
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

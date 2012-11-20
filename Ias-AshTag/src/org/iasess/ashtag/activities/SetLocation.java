@@ -241,7 +241,6 @@ public class SetLocation extends SherlockMapActivity {
 	private SubmitParcel _submitParcel;
 	private MapController _mapController;
 	private LocationManager _locationManager;
-	private LocationListener _locationListener;
 	private MyLocationOverlay _myLoc;
 	private SightingOverlay _sightingOverlay;
 	private float[] _imageLocation;
@@ -249,7 +248,7 @@ public class SetLocation extends SherlockMapActivity {
 
 	private MapView _mapView;
 
-	private Location _lastKnownLocation;
+	//private Location _lastKnownLocation;
 
 	/**
 	 * Required override when using MapView
@@ -295,8 +294,8 @@ public class SetLocation extends SherlockMapActivity {
 		_imageLocation = ImageHandler.getImageLocation(_submitParcel.getImagePath());
 		
 		// set last known based on the last known network connection
-		_lastKnownLocation = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		_sightingOverlay.setMarker(_lastKnownLocation);
+		//_lastKnownLocation = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		_sightingOverlay.setMarker(new GeoPoint(54,2));
 		
 		if (_imageLocation != null) {
 			setByImage();

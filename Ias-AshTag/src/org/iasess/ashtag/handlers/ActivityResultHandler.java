@@ -1,5 +1,6 @@
 package org.iasess.ashtag.handlers;
 
+import org.iasess.ashtag.AshTagApp;
 import org.iasess.ashtag.ImageHandler;
 import org.iasess.ashtag.Logger;
 import org.iasess.ashtag.SubmitParcel;
@@ -37,7 +38,7 @@ public class ActivityResultHandler {
 
 				_activity.startActivity(intent);
 			} else {
-				Logger.warn("Could not get a selected image");
+				AshTagApp.makeToast("Could not read image");
 			}
 		}
 	}
