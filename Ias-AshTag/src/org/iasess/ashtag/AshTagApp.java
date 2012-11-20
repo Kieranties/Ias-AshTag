@@ -181,6 +181,7 @@ public class AshTagApp extends Application {
 		// Configure loader with display options and other settings
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
 			.offOutOfMemoryHandling().defaultDisplayImageOptions(displayOptions)
+			.imageDownloader(new ExtendedImageDownloader(getApplicationContext()))
 			// .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
 			// .discCache(new UnlimitedDiscCache(cacheDir))
 			// .discCacheFileNameGenerator(new HashCodeFileNameGenerator())

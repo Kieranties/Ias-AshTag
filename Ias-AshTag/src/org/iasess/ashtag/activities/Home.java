@@ -1,11 +1,10 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.AshTagApp;
+import org.iasess.ashtag.ExtendedImageDownloader;
 import org.iasess.ashtag.R;
 import org.iasess.ashtag.api.ApiHandler;
-import org.iasess.ashtag.api.CampaignModel;
-import org.iasess.ashtag.data.ImageStore;
-import org.iasess.ashtag.data.TaxonStore;
+import org.iasess.ashtag.data.GuideStore;
 import org.iasess.ashtag.handlers.ActivityResultHandler;
 import org.iasess.ashtag.handlers.ClickHandler;
 import org.iasess.ashtag.handlers.EmailHandler;
@@ -36,78 +35,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * Controls the 'Home' Activity view
  */
 public class Home extends InvadrActivityBase {
-
-	/**
-	 * Class to process the checking of a username in a separate thread
-	 */
-	private class CampaignUpdate extends AsyncTask<Void, Void, CampaignModel> {
-
-		/**
-		 * The progress dialog to display while processing
-		 */
-		private ProgressDialog _dlg;
-		private boolean _displayDetails;
-
-		public CampaignUpdate() {
-			_displayDetails = true;
-		}
-
-		public CampaignUpdate(boolean displayDetails) {
-			_displayDetails = displayDetails;
-		}
-
-		/**
-		 * Executes a request to the API to check the username
-		 * 
-		 * @see android.os.AsyncTask#doInBackground(Params[])
-		 */
-		@Override
-		protected CampaignModel doInBackground(Void... textValue) {
-			// return the response from the api
-			return ApiHandler.GetCampaignDetails();
-		}
-
-		/**
-		 * Dismisses the dialog and updates the UI with the results of the API
-		 * request
-		 * 
-		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-		 */
-		@Override
-		protected void onPostExecute(CampaignModel result) {
-			if (result != null) {
-				result.save();
-			} else {
-				AshTagApp.makeToast(getResources().getString(R.string.get_details_fail));
-			}
-
-			_dlg.dismiss();
-
-			if (_displayDetails) {
-				Intent intent = new Intent(Home.this, About.class);
-				startActivity(intent);
-			}
-		}
-
-		/**
-		 * Displays the progress dialog before executing the async task
-		 * 
-		 * @see android.os.AsyncTask#onPreExecute()
-		 */
-		@Override
-		protected void onPreExecute() {
-			// display the dialog to the user
-			_dlg = ProgressDialog.show(Home.this, "", getResources().getString(R.string.get_details), true, true,
-				new OnCancelListener(){
-					@Override
-					public void onCancel(DialogInterface dialog) {
-						CampaignUpdate.this.cancel(true);
-						finish();
-					}
-				});
-		}
-	}
-
 	/**
 	 * Class to handle the processing of the list content in a separate thread
 	 */
@@ -126,23 +53,7 @@ public class Home extends InvadrActivityBase {
 		 */
 		@Override
 		protected Cursor doInBackground(String... params) {
-			if (params.length > 0 && params[0].equals("refresh")) {
-				taxonStore.update(ApiHandler.getTaxa());
-				return taxonStore.getAll();
-			} else {
-				Cursor taxaCursor = taxonStore.getAll();
-				if (!taxaCursor.moveToFirst()) { // is an empty set
-					taxaCursor.close();
-
-					// get from the api as not initialised
-					taxonStore.update(ApiHandler.getTaxa());
-
-					// re-fetch cursor data
-					taxaCursor = taxonStore.getAll();
-				}
-
-				return taxaCursor;
-			}
+			return guideStore.getAll();
 		}
 
 		/**
@@ -157,7 +68,7 @@ public class Home extends InvadrActivityBase {
 			SimpleCursorAdapter adapter = new SimpleCursorAdapter(Home.this, // Context.
 				R.layout.image_grid_item, result, // Pass in the cursor to bind
 													// to.
-				new String[] { TaxonStore.COL_PK }, // Array of cursor columns
+				new String[] { GuideStore.COL_SMALL_IMAGE }, // Array of cursor columns
 													// to bind to.
 				new int[] { R.id.image }); // Parallel array of which template
 											// objects to bind to those columns.
@@ -169,7 +80,7 @@ public class Home extends InvadrActivityBase {
 
 						// Use UIL to handle caching/image binding
 						ImageView imageSpot = (ImageView)view;
-						String uri = imgStore.getImage(cursor.getInt(columnIndex), "200");
+						String uri = ExtendedImageDownloader.PROTOCOL_ASSETS_PREFIX + cursor.getString(columnIndex);
 						ImageLoader.getInstance().displayImage(uri, imageSpot);
 
 						// return true to say we handled to binding
@@ -215,9 +126,7 @@ public class Home extends InvadrActivityBase {
 		}
 	}
 
-	private TaxonStore taxonStore = new TaxonStore(Home.this);
-
-	private ImageStore imgStore = new ImageStore(Home.this);
+	private GuideStore guideStore = new GuideStore(Home.this);
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -239,10 +148,6 @@ public class Home extends InvadrActivityBase {
 		new PopulateGrid().execute(""); // <- TODO: ugly!
 
 		setUsernameText();
-
-		// Check to see if we've fetched the campaign details before
-		String site = CampaignModel.getInstance().getSite();
-		if (site == null || site.length() == 0) new CampaignUpdate(false).execute();
 	}
 
 	@Override
@@ -256,8 +161,7 @@ public class Home extends InvadrActivityBase {
 	protected void onDestroy() {
 		super.onDestroy();
 
-		taxonStore.close();
-		imgStore.close();
+		guideStore.close();
 	}
 
 	@Override
@@ -267,7 +171,8 @@ public class Home extends InvadrActivityBase {
 				finish();
 				return true;
 			case R.id.btnAbout:
-				new CampaignUpdate().execute();
+				Intent intent = new Intent(this, About.class);
+				startActivity(intent);
 				return true;
 			case R.id.btnAddSighting:
 				new ClickHandler(this).onAddSightingClick(item);

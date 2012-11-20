@@ -1,13 +1,11 @@
 package org.iasess.ashtag.activities;
 
 import org.iasess.ashtag.R;
-import org.iasess.ashtag.api.CampaignModel;
 import org.iasess.ashtag.handlers.ActivityResultHandler;
 import org.iasess.ashtag.handlers.ClickHandler;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -35,11 +33,6 @@ public class About extends InvadrActivityBase {
 		setContentView(R.layout.about);
 		getSupportActionBar().setTitle(R.string.about);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		// Load the HTML content from resources
-		TextView tv = (TextView)findViewById(R.id.textAboutBlurb);
-		CampaignModel model = CampaignModel.getInstance();
-		tv.setText(model.getAbout());
 	}
 
 	@Override

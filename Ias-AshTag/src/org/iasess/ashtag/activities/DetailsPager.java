@@ -1,8 +1,8 @@
 package org.iasess.ashtag.activities;
 
+import org.iasess.ashtag.ExtendedImageDownloader;
 import org.iasess.ashtag.R;
-import org.iasess.ashtag.data.ImageStore;
-import org.iasess.ashtag.data.TaxonStore;
+import org.iasess.ashtag.data.GuideStore;
 import org.iasess.ashtag.handlers.ActivityResultHandler;
 import org.iasess.ashtag.handlers.ClickHandler;
 
@@ -68,10 +68,10 @@ public class DetailsPager extends InvadrActivityBase {
 			final ScrollView content = (ScrollView)detailsLayout.findViewById(R.id.scrollView);
 
 			_items.moveToPosition(position);
-			title.setText(_items.getString(_items.getColumnIndex(TaxonStore.COL_TITLE)));
-			source.setText(_items.getString(_items.getColumnIndex(TaxonStore.COL_SOURCE)));
-			details.setText(_items.getString(_items.getColumnIndex(TaxonStore.COL_DETAIL)));
-			String image = imgStore.getImage(_items.getLong(_items.getColumnIndex(TaxonStore.COL_PK)), "1200");
+			title.setText(_items.getString(_items.getColumnIndex(GuideStore.COL_TITLE)));
+			source.setText(_items.getString(_items.getColumnIndex(GuideStore.COL_SOURCE)));
+			details.setText(_items.getString(_items.getColumnIndex(GuideStore.COL_DETAIL)));
+			String image = ExtendedImageDownloader.PROTOCOL_ASSETS_PREFIX +  _items.getString(_items.getColumnIndex(GuideStore.COL_LARGE_IMAGE));
 
 			_imageLoader.displayImage(image, imageView, new ImageLoadingListener(){
 				@Override
@@ -130,8 +130,7 @@ public class DetailsPager extends InvadrActivityBase {
 		public void startUpdate(View container) {}
 	}
 
-	private TaxonStore taxonStore = new TaxonStore(DetailsPager.this);
-	private ImageStore imgStore = new ImageStore(DetailsPager.this);
+	private GuideStore guideStore = new GuideStore(DetailsPager.this);
 
 	private ImageLoader _imageLoader = ImageLoader.getInstance();
 
@@ -154,7 +153,7 @@ public class DetailsPager extends InvadrActivityBase {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		int position = getIntent().getExtras().getInt("position");
-		Cursor taxaCursor = taxonStore.getAll();
+		Cursor taxaCursor = guideStore.getAll();
 		startManagingCursor(taxaCursor);
 		ViewPager pager = (ViewPager)findViewById(R.id.pager);
 		pager.setAdapter(new ImagePagerAdapter(taxaCursor));
@@ -174,8 +173,7 @@ public class DetailsPager extends InvadrActivityBase {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		taxonStore.close();
-		imgStore.close();
+		guideStore.close();
 	}
 
 	@Override

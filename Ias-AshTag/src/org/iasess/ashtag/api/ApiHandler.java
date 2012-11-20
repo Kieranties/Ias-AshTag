@@ -48,23 +48,6 @@ public class ApiHandler {
 		return API_BASE + API_VERSION + string;
 	}
 
-	public static CampaignModel GetCampaignDetails() {
-		try {
-			// get service response
-			String resp = HttpHandler.getResponseString(composeApiUrl(ASHTAG_CAPAIGN));
-
-			// process through gson
-			Gson gson = new Gson();
-			Type modelType = new TypeToken<CampaignModel>(){}.getType();
-			CampaignModel model = gson.fromJson(resp, modelType);
-			return model;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	/**
 	 * Requests the collection of Taxa from the API
 	 * 
