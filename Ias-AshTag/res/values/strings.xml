@@ -25,6 +25,7 @@
     <string name="submitted">Submitted</string>
     <string name="get_image">Getting image…</string>
     <string name="get_image_fail">No images found…</string>
+    <string name="pin_refine">Drag pin to refine</string>
     <string-array name="camera_options">
         <item>Take Photo</item>
         <item>Choose Existing</item>
