@@ -86,6 +86,11 @@ public final class ImageHandler {
 						String path = getRealPathFromURI(data.getData());
 						if(path != null){ return path; }
 						
+						
+						//TODO: display message saying file is to be downloaded
+						//if yes download the file, if no cancel action
+						
+						
 					    final InputStream is =  AshTagApp.getContext().getContentResolver().openInputStream(data.getData());
 					    File f = createImageFile();
 					    OutputStream os = new FileOutputStream(f);

@@ -12,7 +12,7 @@
         android:background="@color/pressed_ashtag"
         android:textColor="@android:color/white"
         android:gravity="center_horizontal"
-        android:text="Drag pin to refine"/>
+        android:text="@string/pin_refine"/>
     
     <com.google.android.maps.MapView
         android:id="@+id/mapView"
